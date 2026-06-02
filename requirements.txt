@@ -1,0 +1,36 @@
+# Python dependencies for AI-Empowered Teaching Reform project
+# Python 3.11+
+
+# ===== Core =====
+pandas>=2.1.0
+numpy>=1.26.0
+openpyxl>=3.1.0          # Excel I/O
+python-dotenv>=1.0.0      # Read .env files
+
+# ===== Knowledge graph =====
+neo4j>=5.15.0             # Neo4j Python driver
+networkx>=3.2             # Graph algorithms (for prototyping)
+
+# ===== Data quality =====
+pydantic>=2.5.0           # Data validation
+pyyaml>=6.0               # YAML config
+
+# ===== LLM helpers =====
+openai>=1.10.0            # Used for DeepSeek API too (compatible interface)
+tiktoken>=0.5.0           # Token counting
+
+# ===== Knowledge tracing =====
+# pyBKT>=1.4               # Uncomment in Stage 4 when needed
+
+# ===== Visualization (Stage 5) =====
+# streamlit>=1.30           # Uncomment in Stage 5
+# plotly>=5.18              # Uncomment in Stage 5
+
+# ===== Jupyter =====
+jupyter>=1.0.0
+ipykernel>=6.28.0
+
+# ===== Dev tools =====
+black>=23.12.0            # Code formatter
+ruff>=0.1.9               # Linter
+pytest>=7.4.0             # Testing

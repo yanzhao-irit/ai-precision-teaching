@@ -1,0 +1,106 @@
+# ============================================
+# 数据 · Data
+# ============================================
+
+# 原始数据全部忽略 · Ignore all raw data
+data/raw/*
+data/baseline-cohort/*
+data/question-bank/raw/*
+
+# 但保留说明文件 · But keep doc files
+!data/raw/.gitkeep
+!data/raw/_inventory.md
+!data/baseline-cohort/.gitkeep
+!data/question-bank/.gitkeep
+
+# KG 数据可以进 git(没有学生信息)· KG data CAN be in git (no student info)
+# data/kg/ 默认不忽略 · data/kg/ NOT ignored
+
+# Excel / 大文件 · Excel and large files
+*.xlsx
+*.xls
+*.xlsb
+!docs/templates/*.xlsx
+
+# ============================================
+# Python
+# ============================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+.venv/
+venv/
+ENV/
+env/
+.env
+.env.local
+
+# Distribution / packaging
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+*.egg
+
+# ============================================
+# Jupyter
+# ============================================
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# ============================================
+# IDE / Editor
+# ============================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ============================================
+# Secrets · 密钥
+# ============================================
+*.key
+*.pem
+secrets/
+.secret*
+api_keys.json
+project_salt.txt
+
+# ============================================
+# Logs · 日志
+# ============================================
+*.log
+logs/
+*.log.*
+
+# ============================================
+# Neo4j local data
+# ============================================
+neo4j_data/
+neo4j_logs/
+
+# ============================================
+# Models / large binaries · 模型 / 大文件
+# ============================================
+*.pkl
+*.bin
+*.pt
+*.pth
+*.h5
+*.safetensors
+models/*
+!models/.gitkeep
