@@ -28,9 +28,7 @@ Start Neo4j first.
 Then run:
 
 ```powershell
-python scripts/import_ai_demo.py
-python scripts/diagnose_ai_demo.py
-```
+python scripts/run_demo.py
 
 To open the web page:
 
