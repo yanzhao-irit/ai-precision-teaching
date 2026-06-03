@@ -1,0 +1,33 @@
+source_id,target_id,relation_type,explanation
+AI002,AI001,IS_PART_OF,Symbolic AI is a historical and conceptual branch of Artificial Intelligence.
+AI006,AI001,IS_PART_OF,Connectionism is a branch of Artificial Intelligence.
+AI007,AI001,IS_PART_OF,Machine Learning is a core area of Artificial Intelligence.
+AI004,AI002,REQUIRES,Knowledge graphs are easier to understand after symbolic AI.
+AI003,AI002,REQUIRES,Rule-based reasoning belongs to the symbolic AI paradigm.
+AI005,AI004,REQUIRES,Ontologies are often used to structure knowledge graphs.
+AI008,AI007,REQUIRES,Supervised learning requires the general concept of machine learning.
+AI009,AI007,REQUIRES,Unsupervised learning requires the general concept of machine learning.
+AI012,AI010,REQUIRES,Dot product requires understanding vectors.
+AI011,AI010,REQUIRES,Matrices are built from vectors or arrays of numerical values.
+AI013,AI011,REQUIRES,Linear transformations are commonly represented with matrices.
+AI016,AI007,REQUIRES,Neural networks are a machine learning model family.
+AI016,AI010,REQUIRES,Neural networks use vector inputs and vector representations.
+AI016,AI011,REQUIRES,Neural networks use matrices of weights.
+AI016,AI012,REQUIRES,Neuron computations often involve dot products.
+AI016,AI015,REQUIRES,Training a neural network requires a loss function.
+AI017,AI016,REQUIRES,Activation functions are used inside neural networks.
+AI018,AI014,REQUIRES,Backpropagation is used together with gradient descent.
+AI018,AI015,REQUIRES,Backpropagation needs a loss function to compute gradients.
+AI018,AI016,REQUIRES,Backpropagation is an algorithm for neural networks.
+AI019,AI016,REQUIRES,Deep learning is based on neural networks.
+AI020,AI019,REQUIRES,Transformers are deep learning architectures.
+AI021,AI010,REQUIRES,Attention operates on vector representations.
+AI020,AI021,REQUIRES,Transformers rely on attention mechanisms.
+AI022,AI020,REQUIRES,Large language models are often based on transformer architectures.
+AI023,AI010,REQUIRES,Embeddings are vectors.
+AI022,AI023,REQUIRES,LLMs use embeddings to represent tokens.
+AI024,AI022,REQUIRES,RAG requires an LLM for generation.
+AI024,AI004,REQUIRES,RAG can retrieve information from structured knowledge sources such as knowledge graphs.
+AI025,AI022,REQUIRES,AI agents often use LLMs for reasoning and communication.
+AI025,AI024,REQUIRES,Agents can use retrieval to ground their answers.
+AI026,AI001,IS_PART_OF,Robotics control is an AI application area.

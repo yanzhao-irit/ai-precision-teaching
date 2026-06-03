@@ -1,0 +1,27 @@
+concept_id,label,chapter,description
+AI001,Artificial Intelligence,Introduction,The field focused on building systems able to perform tasks that normally require human intelligence.
+AI002,Symbolic AI,Symbolism,"AI approach based on explicit rules, symbols and logical reasoning."
+AI003,Rule-Based Reasoning,Symbolism,Reasoning method using if-then rules to infer conclusions.
+AI004,Knowledge Graph,Symbolism,"Graph-based representation of entities, concepts and relationships."
+AI005,Ontology,Symbolism,"Formal representation of concepts, categories and relations in a domain."
+AI006,Connectionism,Connectionism,AI approach based on distributed representations and neural networks.
+AI007,Machine Learning,Machine Learning,Field where models learn patterns from data instead of being explicitly programmed.
+AI008,Supervised Learning,Machine Learning,Learning setting using labelled examples.
+AI009,Unsupervised Learning,Machine Learning,Learning setting where the model finds structure in unlabelled data.
+AI010,Vector,Mathematical Prerequisites,Ordered list of numerical values used to represent data or features.
+AI011,Matrix,Mathematical Prerequisites,Rectangular array of numbers used for transformations and model parameters.
+AI012,Dot Product,Mathematical Prerequisites,Operation combining two vectors into a scalar by multiplying and summing components.
+AI013,Linear Transformation,Mathematical Prerequisites,"Mapping that preserves vector addition and scalar multiplication, often represented by matrices."
+AI014,Gradient Descent,Optimization,Optimization algorithm that updates parameters in the opposite direction of the gradient.
+AI015,Loss Function,Optimization,Function measuring the error between predictions and expected outputs.
+AI016,Neural Network,Connectionism,Model composed of interconnected layers of artificial neurons.
+AI017,Activation Function,Connectionism,Function introducing non-linearity into a neural network.
+AI018,Backpropagation,Connectionism,Algorithm computing gradients through a neural network to update weights.
+AI019,Deep Learning,Connectionism,Machine learning based on neural networks with multiple layers.
+AI020,Transformer,Large Language Models,Neural architecture based on attention mechanisms.
+AI021,Attention Mechanism,Large Language Models,Mechanism that weights the importance of different input tokens.
+AI022,Large Language Model,Large Language Models,Deep learning model trained on large text corpora to generate and understand language.
+AI023,Embedding,Large Language Models,"Vector representation of text, tokens or entities."
+AI024,Retrieval-Augmented Generation,Large Language Models,Technique combining retrieval from external knowledge sources with text generation.
+AI025,Agent,AI Applications,"System that can plan, use tools and act toward a goal."
+AI026,Robotics Control,Robotics,Methods for controlling physical robot movements.

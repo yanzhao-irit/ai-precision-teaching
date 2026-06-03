@@ -1,0 +1,15 @@
+question_id,question_text,question_type,primary_concept_id,prerequisite_concept_ids,difficulty
+Q001,What is the main difference between symbolic AI and connectionism?,multiple_choice,AI002,AI001;AI006,2
+Q002,What does a knowledge graph represent?,multiple_choice,AI004,AI002;AI005,2
+Q003,Which operation is used to combine two vectors into a scalar?,multiple_choice,AI012,AI010,1
+Q004,Why are matrices important in neural networks?,short_answer,AI016,AI011;AI012,3
+Q005,What is the role of a loss function during training?,multiple_choice,AI015,AI007,2
+Q006,A student computes a neuron output. Which prerequisite is most directly involved?,multiple_choice,AI016,AI010;AI011;AI012,3
+Q007,What problem does backpropagation solve?,multiple_choice,AI018,AI014;AI015;AI016,3
+Q008,Why are activation functions needed?,multiple_choice,AI017,AI016,2
+Q009,What is the relation between deep learning and neural networks?,multiple_choice,AI019,AI016,2
+Q010,What mechanism is central to transformer models?,multiple_choice,AI020,AI021;AI019,3
+Q011,What is an embedding?,multiple_choice,AI023,AI010,2
+Q012,What does retrieval-augmented generation add to an LLM?,multiple_choice,AI024,AI022;AI004,3
+Q013,Why can a wrong answer about LLMs come from a weakness in neural networks?,short_answer,AI022,AI020;AI019;AI016,4
+Q014,What makes an AI system an agent?,multiple_choice,AI025,AI022;AI024,3

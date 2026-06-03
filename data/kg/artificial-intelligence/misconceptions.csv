@@ -1,0 +1,7 @@
+misconception_id,concept_id,label,description
+M001,AI004,Confuses graph and table,Student thinks a knowledge graph is only a table-like database.
+M002,AI012,Incorrect dot product computation,Student multiplies vector components but forgets to sum them.
+M003,AI016,Confuses neuron and weight,Student confuses the role of neurons and weights.
+M004,AI018,Confuses backpropagation and gradient descent,Student thinks backpropagation and gradient descent are exactly the same algorithm.
+M005,AI022,Thinks LLM stores facts exactly,Student believes an LLM simply retrieves exact stored facts instead of generating likely text.
+M006,AI024,Confuses RAG with fine-tuning,Student thinks retrieval-augmented generation is the same as retraining the model.
