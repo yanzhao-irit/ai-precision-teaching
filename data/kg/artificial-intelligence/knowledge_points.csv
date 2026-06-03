@@ -1,0 +1,16 @@
+﻿concept_id,label,chapter,description
+AI001,Artificial Intelligence,Introduction,General field focused on building systems able to perform tasks requiring intelligence
+AI002,Symbolic AI,AI foundations,AI approach based on explicit rules and symbolic reasoning
+AI003,Knowledge Graph,AI foundations,Graph-based representation of concepts entities and relationships
+AI004,Machine Learning,Machine Learning,Field where models learn patterns from data
+AI005,Linear Algebra,Mathematical prerequisites,Mathematical foundation used in many AI models
+AI006,Vector,Mathematical prerequisites,Ordered list of numerical values
+AI007,Matrix,Mathematical prerequisites,Rectangular array of numbers used in transformations
+AI008,Dot Product,Mathematical prerequisites,Operation combining two vectors into a scalar
+AI009,Neural Network,Connectionism,Model based on connected artificial neurons
+AI010,Activation Function,Neural Networks,Function that introduces non-linearity in a neural network
+AI011,Loss Function,Neural Networks,Function used to measure prediction error
+AI012,Backpropagation,Neural Networks,Algorithm used to update neural network weights
+AI013,Deep Learning,Deep Learning,Machine learning approach based on deep neural networks
+AI014,Large Language Model,LLM,Large model trained to understand and generate language
+AI015,Retrieval-Augmented Generation,LLM,Method combining information retrieval with language generation

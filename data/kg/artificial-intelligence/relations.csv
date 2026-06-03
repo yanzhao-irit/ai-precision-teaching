@@ -1,0 +1,15 @@
+﻿source_id,target_id,relation_type,explanation
+AI003,AI002,REQUIRES,Knowledge graphs belong to the symbolic AI approach
+AI008,AI006,REQUIRES,Dot product requires understanding vectors
+AI007,AI005,REQUIRES,Matrix operations require linear algebra basics
+AI008,AI005,REQUIRES,Dot product requires linear algebra basics
+AI009,AI004,REQUIRES,Neural networks are part of machine learning
+AI009,AI006,REQUIRES,Neural networks use vectors as input representations
+AI009,AI007,REQUIRES,Neural networks use matrix operations
+AI009,AI008,REQUIRES,Neural networks use dot products
+AI009,AI011,REQUIRES,Training neural networks requires a loss function
+AI012,AI009,REQUIRES,Backpropagation requires understanding neural networks
+AI013,AI009,REQUIRES,Deep learning is based on neural networks
+AI014,AI013,REQUIRES,Large language models are based on deep learning
+AI015,AI014,REQUIRES,RAG uses a large language model
+AI015,AI003,REQUIRES,RAG can use knowledge bases or graph-based knowledge

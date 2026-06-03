@@ -1,0 +1,11 @@
+﻿question_id,question_text,concept_id,difficulty
+Q001,What is the main purpose of a knowledge graph?,AI003,easy
+Q002,What is the difference between symbolic AI and connectionist AI?,AI002,medium
+Q003,How do you compute a dot product between two vectors?,AI008,medium
+Q004,Why are matrices useful in neural network computation?,AI007,medium
+Q005,What is the role of weights in a neural network?,AI009,medium
+Q006,Why is backpropagation used during training?,AI012,hard
+Q007,What makes deep learning different from traditional machine learning?,AI013,medium
+Q008,What is a large language model?,AI014,medium
+Q009,Why can retrieval improve a language model answer?,AI015,hard
+Q010,Why do neural networks use activation functions?,AI010,medium

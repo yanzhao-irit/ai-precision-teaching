@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Teaching Diagnosis Prototype</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f4f6fb;
+      color: #1f2937;
+      margin: 0;
+    }
+
+    header {
+      background: #111827;
+      color: white;
+      padding: 32px 48px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 30px;
+    }
+
+    header p {
+      color: #d1d5db;
+      margin-top: 8px;
+    }
+
+    main {
+      max-width: 1000px;
+      margin: 32px auto;
+      padding: 0 24px;
+    }
+
+    section {
+      background: white;
+      padding: 28px;
+      margin-bottom: 24px;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+    }
+
+    h2 {
+      margin-top: 0;
+      color: #111827;
+    }
+
+    .card {
+      background: #f9fafb;
+      border-left: 5px solid #2563eb;
+      padding: 16px;
+      border-radius: 8px;
+      margin: 16px 0;
+    }
+
+    .green {
+      background: #ecfdf5;
+      border-left-color: #10b981;
+    }
+
+    .purple {
+      border-left-color: #7c3aed;
+    }
+
+    pre {
+      background: #111827;
+      color: #e5e7eb;
+      padding: 14px;
+      border-radius: 8px;
+      overflow-x: auto;
+    }
+
+    footer {
+      text-align: center;
+      color: #6b7280;
+      padding: 24px;
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <h1>AI Teaching Diagnosis Prototype</h1>
+  <p>First working prototype for explaining student mistakes with a knowledge graph.</p>
+</header>
+
+<main>
+
+  <section>
+    <h2>1. Goal</h2>
+    <p>
+      This prototype helps understand why a student may have made a mistake in an AI course.
+      Instead of only showing whether an answer is correct or incorrect, it links the mistake
+      to course concepts and possible prerequisite gaps.
+    </p>
+
+    <div class="card green">
+      <strong>Example:</strong><br><br>
+      A student fails a question about <strong>Neural Network</strong>.<br>
+      The system checks the knowledge graph and detects that the issue may come from
+      <strong>Dot Product</strong>, <strong>Matrix</strong>, or <strong>Vector</strong>.
+    </div>
+  </section>
+
+  <section>
+    <h2>2. Knowledge graph logic</h2>
+    <p>
+      The course is represented as a graph. Questions are linked to the concepts they evaluate.
+      Concepts are linked to the concepts required to understand them.
+    </p>
+
+    <pre>Student → answered → Question
+Question → evaluates → Concept
+Concept → requires → Prerequisite Concept</pre>
+
+    <p>
+      This makes the diagnosis explainable because the system follows explicit links
+      instead of only giving a black-box answer.
+    </p>
+  </section>
+
+  <section>
+    <h2>3. Example diagnosis</h2>
+
+    <div class="card">
+      <strong>Student:</strong> S001<br>
+      <strong>Failed question:</strong> Q005<br>
+      <strong>Visible concept:</strong> Neural Network<br>
+      <strong>Possible root cause:</strong> Dot Product<br>
+      <strong>Recommendation:</strong> Review Dot Product before retrying Neural Network exercises.
+    </div>
+
+    <p>
+      This is the main value of the prototype: the visible error is not always the real cause.
+      A mistake on a current topic may come from an older prerequisite.
+    </p>
+  </section>
+
+  <section>
+    <h2>4. Link with the four project problems</h2>
+
+    <div class="card purple">
+      <strong>Problem 1 — Understanding mistakes:</strong><br>
+      The prototype gives a possible explanation, not only a score.
+    </div>
+
+    <div class="card purple">
+      <strong>Problem 2 — Linking errors to concepts:</strong><br>
+      Each failed question is connected to a course concept and its prerequisites.
+    </div>
+
+    <div class="card purple">
+      <strong>Problem 3 — Personalized support:</strong><br>
+      Each student gets a specific report with possible gaps and recommendations.
+    </div>
+
+    <div class="card purple">
+      <strong>Problem 4 — Teacher support:</strong><br>
+      The class summary helps the teacher identify frequent difficulties.
+    </div>
+  </section>
+
+  <section>
+    <h2>5. Generated outputs</h2>
+
+    <p>The diagnosis script generates:</p>
+
+    <pre>outputs/ai_diagnosis_results.csv
+outputs/reports/student_S001.md
+outputs/reports/student_S002.md
+outputs/reports/student_S003.md
+outputs/reports/student_S004.md
+outputs/reports/class_summary.md</pre>
+
+    <p>
+      The student reports are easier to understand than raw Neo4j queries.
+      They show the failed question, the visible concept, the possible root cause,
+      an explanation and a recommendation.
+    </p>
+  </section>
+
+  <section>
+    <h2>6. How to run the prototype</h2>
+
+    <p>Start Neo4j first, then run:</p>
+
+    <pre>python scripts/import_ai_demo.py
+python scripts/diagnose_ai_demo.py</pre>
+
+    <p>To open this web page:</p>
+
+    <pre>python -m http.server 8000</pre>
+
+    <p>Then open:</p>
+
+    <pre>http://localhost:8000/web/</pre>
+  </section>
+
+</main>
+
+<footer>
+  AI-Empowered Teaching Reform · First prototype
+</footer>
+</body>
+</html>
