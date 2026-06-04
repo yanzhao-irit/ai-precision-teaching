@@ -2,292 +2,582 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Teaching Dashboard</title>
+
   <style>
     :root {
-      --bg: #f3f6fb;
+      --bg: #eef3fb;
       --card: #ffffff;
-      --dark: #111827;
-      --text: #1f2937;
-      --muted: #6b7280;
+      --text: #111827;
+      --muted: #64748b;
+      --border: #dbe3ef;
       --blue: #2563eb;
+      --blue-dark: #1e40af;
       --green: #10b981;
       --purple: #7c3aed;
       --orange: #f59e0b;
       --red: #ef4444;
-      --border: #e5e7eb;
+      --dark: #0f172a;
+      --shadow: 0 14px 35px rgba(15, 23, 42, 0.10);
+      --radius: 18px;
     }
 
     * {
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background: var(--bg);
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(37, 99, 235, 0.18), transparent 32%),
+        radial-gradient(circle at top right, rgba(124, 58, 237, 0.16), transparent 28%),
+        linear-gradient(180deg, #f8fbff 0%, var(--bg) 100%);
       color: var(--text);
     }
 
     header {
-      background: linear-gradient(135deg, #111827, #1e3a8a);
+      background: linear-gradient(135deg, #0f172a, #1e3a8a 55%, #4c1d95);
       color: white;
-      padding: 34px 48px;
+      padding: 34px 44px;
+    }
+
+    .header-inner {
+      max-width: 1280px;
+      margin: auto;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.14);
+      border: 1px solid rgba(255, 255, 255, 0.22);
+      color: #dbeafe;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 16px;
     }
 
     header h1 {
       margin: 0;
-      font-size: 32px;
+      font-size: clamp(30px, 4vw, 46px);
+      letter-spacing: -0.04em;
     }
 
     header p {
-      margin-top: 10px;
+      margin: 12px 0 0;
       color: #dbeafe;
       max-width: 900px;
-      line-height: 1.5;
+      line-height: 1.6;
+    }
+
+    .header-actions {
+      margin-top: 22px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .header-actions a {
+      background: white;
+      color: #1e3a8a;
+      text-decoration: none;
+      font-weight: 800;
+      padding: 11px 14px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.16);
     }
 
     nav {
-      background: white;
-      border-bottom: 1px solid var(--border);
-      padding: 14px 48px;
       position: sticky;
       top: 0;
-      z-index: 10;
+      z-index: 20;
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      padding: 12px 24px;
+    }
+
+    .nav-inner {
+      max-width: 1280px;
+      margin: auto;
+      display: flex;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
     nav a {
-      margin-right: 22px;
-      color: var(--blue);
-      font-weight: bold;
       text-decoration: none;
-      font-size: 14px;
+      color: #334155;
+      font-size: 13px;
+      font-weight: 800;
+      padding: 8px 10px;
+      border-radius: 999px;
+    }
+
+    nav a:hover {
+      background: #eef2ff;
+      color: var(--blue-dark);
+    }
+
+    .status {
+      color: var(--muted);
+      font-size: 13px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--green);
+      box-shadow: 0 0 0 5px rgba(16, 185, 129, 0.14);
     }
 
     main {
-      max-width: 1250px;
-      margin: 30px auto;
-      padding: 0 24px;
+      max-width: 1280px;
+      margin: 28px auto;
+      padding: 0 24px 48px;
     }
 
     section {
-      background: var(--card);
-      border-radius: 14px;
-      padding: 26px;
+      background: rgba(255, 255, 255, 0.94);
+      border: 1px solid rgba(219, 227, 239, 0.9);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
       margin-bottom: 24px;
-      box-shadow: 0 3px 16px rgba(15, 23, 42, 0.07);
     }
 
     h2 {
-      margin-top: 0;
+      margin: 0 0 8px;
       color: var(--dark);
-      font-size: 24px;
+      font-size: 25px;
+      letter-spacing: -0.02em;
     }
 
     h3 {
-      margin-bottom: 10px;
+      margin: 0 0 10px;
       color: var(--dark);
     }
 
     .subtitle {
+      margin: 0 0 18px;
       color: var(--muted);
-      margin-top: -8px;
-      margin-bottom: 22px;
-      line-height: 1.5;
+      line-height: 1.55;
     }
 
-    .grid {
+    .kpi-grid {
       display: grid;
       grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 16px;
+      gap: 14px;
+      margin-top: 18px;
     }
 
     .kpi {
-      background: #f9fafb;
+      background: linear-gradient(180deg, white, #f8fafc);
       border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 18px;
+      border-radius: 16px;
+      padding: 17px;
+      min-height: 116px;
     }
 
     .kpi span {
       color: var(--muted);
       font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
 
     .kpi strong {
       display: block;
-      font-size: 26px;
-      margin-top: 8px;
+      margin-top: 12px;
       color: var(--dark);
+      font-size: 28px;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
     }
 
     .problem-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 18px;
     }
 
-    .problem {
-      border-left: 5px solid var(--purple);
-      background: #faf5ff;
-      padding: 16px;
-      border-radius: 10px;
+    .problem-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
       line-height: 1.5;
     }
 
-    .problem strong {
-      color: #581c87;
-    }
-
-    .filters {
+    .number {
+      width: 34px;
+      height: 34px;
+      background: #eef2ff;
+      color: var(--blue-dark);
+      border-radius: 12px;
       display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      margin-bottom: 18px;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      margin-bottom: 12px;
     }
 
-    select, input {
-      padding: 10px 12px;
+    .layout {
+      display: grid;
+      grid-template-columns: 1.25fr 0.75fr;
+      gap: 18px;
+    }
+
+    .graph-shell {
       border: 1px solid var(--border);
-      border-radius: 9px;
-      min-width: 200px;
+      border-radius: 18px;
+      overflow: hidden;
+      background: #fbfdff;
+    }
+
+    .graph-toolbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      padding: 14px;
+      border-bottom: 1px solid var(--border);
       background: white;
     }
 
+    .toolbar-left,
+    .toolbar-right {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    button,
+    select,
+    input {
+      border: 1px solid var(--border);
+      border-radius: 11px;
+      background: white;
+      padding: 10px 12px;
+      font: inherit;
+      color: var(--text);
+    }
+
     button {
-      padding: 10px 14px;
-      border: none;
-      border-radius: 9px;
-      background: var(--blue);
-      color: white;
-      font-weight: bold;
       cursor: pointer;
+      font-weight: 800;
+      color: white;
+      background: var(--blue);
+      border-color: var(--blue);
     }
 
     button.secondary {
-      background: #374151;
+      background: #334155;
+      border-color: #334155;
     }
 
-    .chart-row {
+    button.light {
+      color: #334155;
+      background: #f8fafc;
+      border-color: var(--border);
+    }
+
+    svg {
+      width: 100%;
+      height: 570px;
+      display: block;
+      background:
+        linear-gradient(rgba(148, 163, 184, 0.10) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(148, 163, 184, 0.10) 1px, transparent 1px),
+        #fbfdff;
+      background-size: 28px 28px;
+    }
+
+    .edge {
+      stroke: #94a3b8;
+      stroke-width: 2;
+      opacity: 0.72;
+      marker-end: url(#arrow);
+    }
+
+    .edge.highlight {
+      stroke: var(--orange);
+      stroke-width: 4;
+      opacity: 1;
+    }
+
+    .node {
+      cursor: pointer;
+    }
+
+    .node circle {
+      stroke: white;
+      stroke-width: 4;
+    }
+
+    .node text {
+      pointer-events: none;
+      font-size: 11px;
+      fill: #0f172a;
+      font-weight: 800;
+      text-anchor: middle;
+    }
+
+    .node.dim {
+      opacity: 0.25;
+    }
+
+    .node.selected circle {
+      stroke: #111827;
+      stroke-width: 5;
+    }
+
+    .side-panel {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: white;
+      padding: 20px;
+      min-height: 640px;
+    }
+
+    .concept-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .concept-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 15px;
+      background: linear-gradient(135deg, var(--blue), var(--purple));
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #3730a3;
+      font-size: 12px;
+      font-weight: 800;
+      margin: 3px 4px 3px 0;
+    }
+
+    .pill.orange {
+      background: #fef3c7;
+      color: #92400e;
+    }
+
+    .pill.green {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .pill.red {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    .pill.gray {
+      background: #f1f5f9;
+      color: #475569;
+    }
+
+    .mini-list {
+      margin: 10px 0 0;
+      padding-left: 0;
+      list-style: none;
+    }
+
+    .mini-list li {
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 10px;
+      margin-bottom: 8px;
+      background: #f8fafc;
+      line-height: 1.4;
+    }
+
+    .chart-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 18px;
+      margin-top: 18px;
     }
 
     .chart-card {
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 16px;
       padding: 18px;
-      background: #fbfdff;
+      background: white;
     }
 
     .bar-line {
-      margin: 14px 0;
+      margin: 13px 0;
     }
 
     .bar-label {
       display: flex;
       justify-content: space-between;
+      gap: 10px;
       font-size: 13px;
       margin-bottom: 6px;
-      gap: 12px;
     }
 
     .bar-bg {
-      height: 12px;
-      background: #e5e7eb;
+      height: 13px;
+      background: #e2e8f0;
       border-radius: 999px;
       overflow: hidden;
     }
 
     .bar {
       height: 100%;
-      background: linear-gradient(90deg, var(--blue), var(--green));
       border-radius: 999px;
+      background: linear-gradient(90deg, var(--blue), var(--green));
+      min-width: 5%;
     }
 
-    .student-cards {
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 14px 0 18px;
+    }
+
+    .student-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px;
+      gap: 14px;
     }
 
     .student-card {
       border: 1px solid var(--border);
-      border-radius: 12px;
+      border-radius: 16px;
       padding: 18px;
-      background: #ffffff;
+      background: white;
     }
 
-    .tag {
-      display: inline-block;
-      padding: 5px 8px;
-      border-radius: 999px;
-      background: #dbeafe;
-      color: #1e40af;
+    .student-card h3 {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .risk {
       font-size: 12px;
-      margin: 3px 4px 3px 0;
+      padding: 6px 9px;
+      border-radius: 999px;
+      background: #d1fae5;
+      color: #065f46;
+      font-weight: 900;
     }
 
-    .tag.red {
+    .risk.high {
       background: #fee2e2;
       color: #991b1b;
     }
 
-    .tag.green {
-      background: #d1fae5;
-      color: #065f46;
-    }
-
-    .tag.orange {
+    .risk.medium {
       background: #fef3c7;
       color: #92400e;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      max-height: 700px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: white;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 14px;
+      font-size: 13px;
     }
 
-    th, td {
+    th,
+    td {
+      padding: 12px;
       border-bottom: 1px solid var(--border);
-      padding: 11px;
       text-align: left;
       vertical-align: top;
     }
 
     th {
-      background: #f9fafb;
-      color: #374151;
       position: sticky;
-      top: 48px;
+      top: 0;
+      z-index: 4;
+      background: #f8fafc;
+      color: #334155;
+      white-space: nowrap;
     }
 
     tr:hover {
-      background: #f9fafb;
+      background: #f8fafc;
     }
 
     .small {
-      font-size: 13px;
+      font-size: 12px;
       color: var(--muted);
-      line-height: 1.4;
+      line-height: 1.45;
+    }
+
+    .links {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-top: 14px;
     }
 
     .links a {
-      display: inline-block;
-      margin: 6px 10px 6px 0;
-      color: var(--blue);
-      font-weight: bold;
       text-decoration: none;
+      background: #eef2ff;
+      color: #3730a3;
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-weight: 800;
+      font-size: 13px;
     }
 
-    .warning {
+    .insight {
+      border-radius: 16px;
+      padding: 18px;
       background: #fffbeb;
       border-left: 5px solid var(--orange);
-      padding: 16px;
-      border-radius: 10px;
       line-height: 1.5;
+      margin-top: 18px;
     }
 
     footer {
@@ -296,464 +586,770 @@
       padding: 34px;
     }
 
-    @media (max-width: 900px) {
-      .grid,
-      .chart-row,
-      .student-cards,
-      .problem-grid {
+    @media (max-width: 1050px) {
+      .kpi-grid,
+      .problem-grid,
+      .layout,
+      .chart-grid,
+      .student-grid {
         grid-template-columns: 1fr;
       }
 
-      header, nav {
-        padding-left: 24px;
-        padding-right: 24px;
+      svg {
+        height: 640px;
       }
     }
   </style>
 </head>
 
 <body>
-<header>
-  <h1>Teaching Dashboard</h1>
-  <p>
-    A simple teacher dashboard for the AI course diagnosis prototype.
-    It uses the generated diagnosis CSV to explain student mistakes, identify possible prerequisite gaps,
-    and prepare personalized support.
-  </p>
-</header>
-
-<nav>
-  <a href="#overview">Overview</a>
-  <a href="#problems">4 Problems</a>
-  <a href="#charts">Charts</a>
-  <a href="#students">Students</a>
-  <a href="#details">Details</a>
-  <a href="#links">Links</a>
-</nav>
-
-<main>
-
-<section id="overview">
-  <h2>Overview</h2>
-  <p class="subtitle">
-    This page loads <strong>outputs/ai_diagnosis_results.csv</strong>.
-    Run <strong>python scripts/run_demo.py</strong> first to generate the data.
-  </p>
-
-  <div class="grid">
-    <div class="kpi">
-      <span>Diagnosed mistakes</span>
-      <strong id="kpiMistakes">-</strong>
+  <header>
+    <div class="header-inner">
+      <div class="badge">AI-Empowered Teaching Reform · Teacher Dashboard</div>
+      <h1>AI Teaching Diagnosis Dashboard</h1>
+      <p>
+        Interactive interface generated from Neo4j data and diagnosis results.
+        It helps explain student mistakes, identify possible prerequisite gaps,
+        personalize support, and summarize class-level difficulties.
+      </p>
+      <div class="header-actions">
+        <a href="http://localhost:7474/browser/" target="_blank">Open Neo4j</a>
+        <a href="../outputs/reports/class_summary.md" target="_blank">Class summary</a>
+        <a href="../docs/demo.md" target="_blank">Demo documentation</a>
+      </div>
     </div>
-    <div class="kpi">
-      <span>Students with mistakes</span>
-      <strong id="kpiStudents">-</strong>
+  </header>
+
+  <nav>
+    <div class="nav-inner">
+      <div class="nav-links">
+        <a href="#overview">Overview</a>
+        <a href="#problems">4 Problems</a>
+        <a href="#graph">Graph</a>
+        <a href="#analytics">Analytics</a>
+        <a href="#students">Students</a>
+        <a href="#details">Details</a>
+        <a href="#actions">Actions</a>
+      </div>
+      <div class="status"><span class="dot"></span><span id="dataStatus">Loading data...</span></div>
     </div>
-    <div class="kpi">
-      <span>Main visible concept</span>
-      <strong id="kpiConcept">-</strong>
-    </div>
-    <div class="kpi">
-      <span>Main root cause</span>
-      <strong id="kpiRoot">-</strong>
-    </div>
-  </div>
+  </nav>
 
-  <div class="warning" style="margin-top:18px;">
-    This is a first dashboard version. It uses synthetic demo data, but the structure is ready to be reused with anonymized real data later.
-  </div>
-</section>
+  <main>
+    <section id="overview">
+      <h2>Overview</h2>
+      <p class="subtitle">
+        This dashboard loads <strong>web/data/dashboard_data.json</strong>, generated from Neo4j and the diagnosis results.
+        Click a concept in the graph to update the questions, student cases and diagnosis table.
+      </p>
 
-<section id="problems">
-  <h2>Link with the 4 project problems</h2>
+      <div class="kpi-grid">
+        <div class="kpi"><span>Concepts</span><strong id="kpiConcepts">-</strong></div>
+        <div class="kpi"><span>Relations</span><strong id="kpiRelations">-</strong></div>
+        <div class="kpi"><span>Diagnosed mistakes</span><strong id="kpiMistakes">-</strong></div>
+        <div class="kpi"><span>Students</span><strong id="kpiStudents">-</strong></div>
+      </div>
 
-  <div class="problem-grid">
-    <div class="problem">
-      <strong>1. Understanding mistakes</strong><br>
-      The dashboard does not only show wrong answers. It displays the visible concept, possible root cause, explanation and recommendation.
-    </div>
+      <div class="insight" id="mainInsight">Loading class insight...</div>
+    </section>
 
-    <div class="problem">
-      <strong>2. Linking errors to course concepts</strong><br>
-      Each failed question is linked to a concept, and each concept is linked to prerequisites in the knowledge graph.
-    </div>
+    <section id="problems">
+      <h2>How this answers the 4 project problems</h2>
+      <p class="subtitle">
+        The interface is organized around the main educational needs of the project.
+      </p>
 
-    <div class="problem">
-      <strong>3. Personalized support</strong><br>
-      Each student has a specific diagnosis and recommendations based on their own failed questions.
-    </div>
+      <div class="problem-grid">
+        <div class="problem-card">
+          <div class="number">1</div>
+          <strong>Understand mistakes</strong>
+          It displays the visible concept, possible root cause, explanation and recommendation, instead of only a score.
+        </div>
 
-    <div class="problem">
-      <strong>4. Teacher dashboard</strong><br>
-      The charts summarize frequent errors and root causes to help the teacher adapt the course.
-    </div>
-  </div>
-</section>
+        <div class="problem-card">
+          <div class="number">2</div>
+          <strong>Link errors to concepts</strong>
+          The graph connects questions, AI concepts and prerequisites, making the diagnosis traceable.
+        </div>
 
-<section id="charts">
-  <h2>Class-level analysis</h2>
-  <p class="subtitle">
-    These charts help the teacher identify the concepts and prerequisite gaps that appear most often.
-  </p>
+        <div class="problem-card">
+          <div class="number">3</div>
+          <strong>Personalize support</strong>
+          Each student has specific weaknesses and targeted recommendations.
+        </div>
 
-  <div class="chart-row">
-    <div class="chart-card">
-      <h3>Visible error concepts</h3>
-      <div id="visibleConceptChart"></div>
-    </div>
+        <div class="problem-card">
+          <div class="number">4</div>
+          <strong>Teacher dashboard</strong>
+          Charts summarize frequent concepts, root causes and students needing attention.
+        </div>
+      </div>
+    </section>
 
-    <div class="chart-card">
-      <h3>Possible root causes</h3>
-      <div id="rootCauseChart"></div>
-    </div>
-  </div>
+    <section id="graph">
+      <h2>Interactive knowledge graph</h2>
+      <p class="subtitle">
+        Click a concept. The side panel, student cards and diagnosis table update automatically.
+        Orange edges show direct prerequisite links around the selected concept.
+      </p>
 
-  <div class="chart-row" style="margin-top:18px;">
-    <div class="chart-card">
-      <h3>Cause types</h3>
-      <div id="causeTypeChart"></div>
-    </div>
+      <div class="layout">
+        <div class="graph-shell">
+          <div class="graph-toolbar">
+            <div class="toolbar-left">
+              <button onclick="selectConceptByLabel('Neural Network')">Focus Neural Network</button>
+              <button onclick="selectConceptByLabel('Large Language Model')" class="secondary">Focus LLM</button>
+              <button onclick="clearSelection()" class="light">Clear selection</button>
+            </div>
+            <div class="toolbar-right">
+              <select id="chapterFilter"></select>
+            </div>
+          </div>
 
-    <div class="chart-card">
-      <h3>Average suspicion score by student</h3>
-      <div id="studentScoreChart"></div>
-    </div>
-  </div>
-</section>
+          <svg id="graphSvg" viewBox="0 0 900 570" aria-label="Knowledge graph"></svg>
+        </div>
 
-<section id="students">
-  <h2>Student view</h2>
-  <p class="subtitle">
-    Each card summarizes the main issues detected for a student.
-  </p>
+        <aside class="side-panel">
+          <div id="conceptPanel"></div>
+        </aside>
+      </div>
+    </section>
 
-  <div class="filters">
-    <select id="studentFilter"></select>
-    <button onclick="resetFilters()" class="secondary">Reset filters</button>
-  </div>
+    <section id="analytics">
+      <h2>Class-level analytics</h2>
+      <p class="subtitle">
+        These charts help teachers identify the most frequent visible mistakes and possible root causes.
+      </p>
 
-  <div class="student-cards" id="studentCards"></div>
-</section>
+      <div class="chart-grid">
+        <div class="chart-card">
+          <h3>Visible error concepts</h3>
+          <div id="visibleChart"></div>
+        </div>
 
-<section id="details">
-  <h2>Diagnosis details</h2>
-  <p class="subtitle">
-    Full list of diagnosed mistakes. Use the filters to inspect a specific student or concept.
-  </p>
+        <div class="chart-card">
+          <h3>Possible root causes</h3>
+          <div id="rootChart"></div>
+        </div>
 
-  <div class="filters">
-    <select id="conceptFilter"></select>
-    <input id="searchInput" placeholder="Search question, explanation..." />
-  </div>
+        <div class="chart-card">
+          <h3>Cause types</h3>
+          <div id="causeChart"></div>
+        </div>
 
-  <div style="overflow:auto; max-height: 650px;">
-    <table>
-      <thead>
-        <tr>
-          <th>Student</th>
-          <th>Question</th>
-          <th>Visible concept</th>
-          <th>Possible root cause</th>
-          <th>Score</th>
-          <th>Explanation</th>
-          <th>Recommendation</th>
-        </tr>
-      </thead>
-      <tbody id="detailsTable"></tbody>
-    </table>
-  </div>
-</section>
+        <div class="chart-card">
+          <h3>Average suspicion score by student</h3>
+          <div id="studentScoreChart"></div>
+        </div>
+      </div>
+    </section>
 
-<section id="links">
-  <h2>Useful links</h2>
+    <section id="students">
+      <h2>Student view</h2>
+      <p class="subtitle">
+        Quickly identify which students need support and what should be reviewed first.
+      </p>
 
-  <div class="links">
-    <a href="http://localhost:7474/browser/" target="_blank">Open Neo4j Browser</a>
-    <a href="../outputs/ai_diagnosis_results.csv" target="_blank">Open diagnosis CSV</a>
-    <a href="../outputs/reports/class_summary.md" target="_blank">Open class summary</a>
-    <a href="../outputs/reports/student_S001.md" target="_blank">Open student S001 report</a>
-    <a href="../docs/demo.md" target="_blank">Open demo documentation</a>
-  </div>
+      <div class="controls">
+        <select id="studentFilter"></select>
+        <select id="rootFilter"></select>
+        <button onclick="resetFilters()" class="secondary">Reset filters</button>
+      </div>
 
-  <p class="small">
-    Neo4j must be running to inspect the graph. The reports and CSV are generated locally with the demo script.
-  </p>
-</section>
+      <div id="studentCards" class="student-grid"></div>
+    </section>
 
-</main>
+    <section id="details">
+      <h2>Diagnosis details</h2>
+      <p class="subtitle">
+        Full table of diagnosed mistakes. Use filters, search or graph selection.
+      </p>
 
-<footer>
-  AI-Empowered Teaching Reform · Teaching Dashboard
-</footer>
+      <div class="controls">
+        <select id="conceptFilter"></select>
+        <input id="searchInput" placeholder="Search question, explanation, recommendation..." />
+      </div>
 
-<script>
-  let rows = [];
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Student</th>
+              <th>Question</th>
+              <th>Visible concept</th>
+              <th>Root cause</th>
+              <th>Score</th>
+              <th>Explanation</th>
+              <th>Recommendation</th>
+            </tr>
+          </thead>
+          <tbody id="detailsTable"></tbody>
+        </table>
+      </div>
+    </section>
 
-  async function loadCsv() {
-    try {
-      const response = await fetch("../outputs/ai_diagnosis_results.csv");
-      if (!response.ok) throw new Error("CSV not found");
-      const text = await response.text();
-      rows = parseCsv(text);
-      initializeDashboard();
-    } catch (error) {
-      document.querySelector("main").innerHTML = `
-        <section>
-          <h2>CSV file not found</h2>
-          <p>The dashboard needs the generated diagnosis CSV.</p>
-          <pre>python scripts/run_demo.py
+    <section id="actions">
+      <h2>Useful actions</h2>
+      <p class="subtitle">Main files generated by the prototype.</p>
+
+      <div class="links">
+        <a href="http://localhost:7474/browser/" target="_blank">Open Neo4j Browser</a>
+        <a href="../outputs/ai_diagnosis_results.csv" target="_blank">Open diagnosis CSV</a>
+        <a href="../outputs/reports/class_summary.md" target="_blank">Open class summary</a>
+        <a href="../outputs/reports/student_S001.md" target="_blank">Open report S001</a>
+        <a href="../outputs/reports/student_S002.md" target="_blank">Open report S002</a>
+        <a href="../docs/demo.md" target="_blank">Open documentation</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    AI-Empowered Teaching Reform · Interactive Teacher Dashboard
+  </footer>
+
+  <script>
+    let data = null;
+    let selectedConceptId = null;
+    let selectedConceptLabel = "";
+    let activeChapter = "";
+
+    async function loadData() {
+      try {
+        const response = await fetch("data/dashboard_data.json");
+        if (!response.ok) throw new Error("dashboard_data.json not found");
+        data = await response.json();
+        document.getElementById("dataStatus").textContent = "Data loaded";
+        initialize();
+      } catch (error) {
+        document.getElementById("dataStatus").textContent = "Data missing";
+        document.querySelector("main").innerHTML = `
+          <section>
+            <h2>Dashboard data not found</h2>
+            <p>Run the demo first:</p>
+            <pre>python scripts/run_demo.py
 python -m http.server 8000</pre>
-          <p>Then open: <strong>http://localhost:8000/web/dashboard.html</strong></p>
-        </section>
-      `;
-    }
-  }
-
-  function parseCsv(text) {
-    const lines = text.trim().split(/\r?\n/);
-    const headers = splitCsvLine(lines[0]);
-
-    return lines.slice(1).map(line => {
-      const values = splitCsvLine(line);
-      const obj = {};
-      headers.forEach((h, i) => obj[h] = values[i] || "");
-      return obj;
-    });
-  }
-
-  function splitCsvLine(line) {
-    const result = [];
-    let current = "";
-    let inQuotes = false;
-
-    for (let i = 0; i < line.length; i++) {
-      const char = line[i];
-      const next = line[i + 1];
-
-      if (char === '"' && inQuotes && next === '"') {
-        current += '"';
-        i++;
-      } else if (char === '"') {
-        inQuotes = !inQuotes;
-      } else if (char === "," && !inQuotes) {
-        result.push(current);
-        current = "";
-      } else {
-        current += char;
+            <p>Then open: <strong>http://localhost:8000/web/dashboard.html</strong></p>
+          </section>
+        `;
       }
     }
 
-    result.push(current);
-    return result;
-  }
+    function byId(id) {
+      return document.getElementById(id);
+    }
 
-  function countBy(field, data = rows) {
-    const counts = {};
-    data.forEach(row => {
-      const key = row[field] || "Unknown";
-      counts[key] = (counts[key] || 0) + 1;
-    });
-    return counts;
-  }
+    function countBy(rows, field) {
+      const counts = {};
+      rows.forEach(row => {
+        const key = row[field] || "Unknown";
+        counts[key] = (counts[key] || 0) + 1;
+      });
+      return counts;
+    }
 
-  function averageBy(groupField, valueField) {
-    const groups = {};
+    function topEntry(counts) {
+      const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+      return entries.length ? entries[0] : ["-", 0];
+    }
 
-    rows.forEach(row => {
-      const key = row[groupField] || "Unknown";
-      const value = parseFloat(row[valueField] || "0");
+    function averageBy(rows, groupField, valueField) {
+      const groups = {};
 
-      if (!groups[key]) groups[key] = { sum: 0, count: 0 };
-      groups[key].sum += value;
-      groups[key].count += 1;
-    });
+      rows.forEach(row => {
+        const key = row[groupField] || "Unknown";
+        const value = parseFloat(row[valueField] || "0");
 
-    const result = {};
-    Object.keys(groups).forEach(key => {
-      result[key] = groups[key].sum / groups[key].count;
-    });
+        if (!groups[key]) groups[key] = { sum: 0, count: 0 };
+        groups[key].sum += value;
+        groups[key].count += 1;
+      });
 
-    return result;
-  }
+      const result = {};
+      Object.keys(groups).forEach(key => {
+        result[key] = groups[key].sum / groups[key].count;
+      });
 
-  function topKey(counts) {
-    const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
-    return entries.length ? entries[0][0] : "-";
-  }
+      return result;
+    }
 
-  function renderKpis() {
-    const students = new Set(rows.map(r => r.student_id));
-    const concepts = countBy("visible_concept");
-    const roots = countBy("possible_root_cause");
+    function unique(rows, field) {
+      return [...new Set(rows.map(row => row[field]).filter(Boolean))].sort();
+    }
 
-    document.getElementById("kpiMistakes").textContent = rows.length;
-    document.getElementById("kpiStudents").textContent = students.size;
-    document.getElementById("kpiConcept").textContent = topKey(concepts);
-    document.getElementById("kpiRoot").textContent = topKey(roots);
-  }
+    function conceptById(id) {
+      return data.concepts.find(c => c.id === id);
+    }
 
-  function renderBarChart(containerId, counts, percent = false) {
-    const container = document.getElementById(containerId);
-    const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
-    const max = Math.max(...entries.map(e => e[1]), 1);
+    function conceptByLabel(label) {
+      return data.concepts.find(c => c.label === label);
+    }
 
-    container.innerHTML = "";
+    function getPrerequisites(conceptId) {
+      return data.relations
+        .filter(r => r.source === conceptId)
+        .map(r => conceptById(r.target))
+        .filter(Boolean);
+    }
 
-    entries.forEach(([label, value]) => {
-      const width = percent ? Math.round(value * 100) : Math.round((value / max) * 100);
-      const displayValue = percent ? value.toFixed(2) : value;
+    function getDependentConcepts(conceptId) {
+      return data.relations
+        .filter(r => r.target === conceptId)
+        .map(r => conceptById(r.source))
+        .filter(Boolean);
+    }
 
-      container.innerHTML += `
-        <div class="bar-line">
-          <div class="bar-label">
-            <span>${label}</span>
-            <strong>${displayValue}</strong>
-          </div>
-          <div class="bar-bg">
-            <div class="bar" style="width:${width}%"></div>
-          </div>
-        </div>
+    function getQuestionsForConcept(conceptId) {
+      return data.questions.filter(q => q.concept_id === conceptId);
+    }
+
+    function diagnosisRelatedTo(label) {
+      return data.diagnosis.filter(row =>
+        row.visible_concept === label || row.possible_root_cause === label
+      );
+    }
+
+    function renderKpis() {
+      const students = new Set(data.diagnosis.map(row => row.student_id));
+
+      byId("kpiConcepts").textContent = data.concepts.length;
+      byId("kpiRelations").textContent = data.relations.length;
+      byId("kpiMistakes").textContent = data.diagnosis.length;
+      byId("kpiStudents").textContent = students.size;
+
+      const [topRoot, topRootCount] = topEntry(countBy(data.diagnosis, "possible_root_cause"));
+      const [topVisible, topVisibleCount] = topEntry(countBy(data.diagnosis, "visible_concept"));
+
+      byId("mainInsight").innerHTML = `
+        <strong>Main class insight:</strong>
+        the most frequent visible error concept is <strong>${topVisible}</strong> (${topVisibleCount} case(s)),
+        while the most frequent possible root cause is <strong>${topRoot}</strong> (${topRootCount} case(s)).
+        This helps the teacher decide what should be reviewed first.
       `;
-    });
-  }
+    }
 
-  function renderCharts() {
-    renderBarChart("visibleConceptChart", countBy("visible_concept"));
-    renderBarChart("rootCauseChart", countBy("possible_root_cause"));
-    renderBarChart("causeTypeChart", countBy("cause_type"));
-    renderBarChart("studentScoreChart", averageBy("student_id", "suspicion_score"), true);
-  }
+    function setupFilters() {
+      const studentFilter = byId("studentFilter");
+      const conceptFilter = byId("conceptFilter");
+      const rootFilter = byId("rootFilter");
+      const chapterFilter = byId("chapterFilter");
 
-  function uniqueValues(field) {
-    return [...new Set(rows.map(r => r[field]).filter(Boolean))].sort();
-  }
+      studentFilter.innerHTML = `<option value="">All students</option>`;
+      conceptFilter.innerHTML = `<option value="">All visible concepts</option>`;
+      rootFilter.innerHTML = `<option value="">All root causes</option>`;
+      chapterFilter.innerHTML = `<option value="">All chapters</option>`;
 
-  function populateFilters() {
-    const studentFilter = document.getElementById("studentFilter");
-    const conceptFilter = document.getElementById("conceptFilter");
+      unique(data.diagnosis, "student_id").forEach(value => {
+        studentFilter.innerHTML += `<option value="${value}">${value}</option>`;
+      });
 
-    studentFilter.innerHTML = `<option value="">All students</option>`;
-    conceptFilter.innerHTML = `<option value="">All concepts</option>`;
+      unique(data.diagnosis, "visible_concept").forEach(value => {
+        conceptFilter.innerHTML += `<option value="${value}">${value}</option>`;
+      });
 
-    uniqueValues("student_id").forEach(value => {
-      studentFilter.innerHTML += `<option value="${value}">${value}</option>`;
-    });
+      unique(data.diagnosis, "possible_root_cause").forEach(value => {
+        rootFilter.innerHTML += `<option value="${value}">${value}</option>`;
+      });
 
-    uniqueValues("visible_concept").forEach(value => {
-      conceptFilter.innerHTML += `<option value="${value}">${value}</option>`;
-    });
+      [...new Set(data.concepts.map(c => c.chapter).filter(Boolean))].sort().forEach(value => {
+        chapterFilter.innerHTML += `<option value="${value}">${value}</option>`;
+      });
 
-    studentFilter.addEventListener("change", renderDynamicViews);
-    conceptFilter.addEventListener("change", renderDynamicViews);
-    document.getElementById("searchInput").addEventListener("input", renderDynamicViews);
-  }
+      studentFilter.addEventListener("change", renderDynamicViews);
+      conceptFilter.addEventListener("change", renderDynamicViews);
+      rootFilter.addEventListener("change", renderDynamicViews);
+      byId("searchInput").addEventListener("input", renderDynamicViews);
 
-  function getFilteredRows() {
-    const student = document.getElementById("studentFilter").value;
-    const concept = document.getElementById("conceptFilter").value;
-    const search = document.getElementById("searchInput").value.toLowerCase();
+      chapterFilter.addEventListener("change", () => {
+        activeChapter = chapterFilter.value;
+        renderGraph();
+        renderConceptPanel();
+      });
+    }
 
-    return rows.filter(row => {
-      const matchStudent = !student || row.student_id === student;
-      const matchConcept = !concept || row.visible_concept === concept;
+    function getFilteredDiagnosis() {
+      const student = byId("studentFilter").value;
+      const concept = byId("conceptFilter").value;
+      const root = byId("rootFilter").value;
+      const search = byId("searchInput").value.toLowerCase();
 
-      const text = [
-        row.question_text,
-        row.teacher_explanation,
-        row.recommendation,
-        row.possible_root_cause,
-        row.visible_concept
-      ].join(" ").toLowerCase();
+      return data.diagnosis.filter(row => {
+        const matchStudent = !student || row.student_id === student;
+        const matchConcept = !concept || row.visible_concept === concept;
+        const matchRoot = !root || row.possible_root_cause === root;
 
-      const matchSearch = !search || text.includes(search);
+        const matchSelected = !selectedConceptLabel ||
+          row.visible_concept === selectedConceptLabel ||
+          row.possible_root_cause === selectedConceptLabel;
 
-      return matchStudent && matchConcept && matchSearch;
-    });
-  }
+        const text = [
+          row.question_text,
+          row.teacher_explanation,
+          row.recommendation,
+          row.visible_concept,
+          row.possible_root_cause,
+          row.student_id
+        ].join(" ").toLowerCase();
 
-  function renderStudentCards() {
-    const container = document.getElementById("studentCards");
-    const selectedStudent = document.getElementById("studentFilter").value;
+        const matchSearch = !search || text.includes(search);
 
-    const data = selectedStudent
-      ? rows.filter(r => r.student_id === selectedStudent)
-      : rows;
+        return matchStudent && matchConcept && matchRoot && matchSelected && matchSearch;
+      });
+    }
 
-    const byStudent = {};
-    data.forEach(row => {
-      if (!byStudent[row.student_id]) byStudent[row.student_id] = [];
-      byStudent[row.student_id].push(row);
-    });
+    function renderBarChart(containerId, counts, isAverage = false) {
+      const container = byId(containerId);
+      const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+      const max = Math.max(...entries.map(e => e[1]), 1);
 
-    container.innerHTML = "";
+      container.innerHTML = "";
 
-    Object.keys(byStudent).sort().forEach(student => {
-      const studentRows = byStudent[student];
-      const roots = Object.keys(countBy("possible_root_cause", studentRows));
-      const concepts = Object.keys(countBy("visible_concept", studentRows));
-      const avgScore = studentRows.reduce((sum, r) => sum + parseFloat(r.suspicion_score || "0"), 0) / studentRows.length;
+      entries.forEach(([label, value]) => {
+        const percent = isAverage ? Math.max(5, value * 100) : Math.max(5, (value / max) * 100);
+        const displayValue = isAverage ? value.toFixed(2) : value;
 
-      container.innerHTML += `
-        <div class="student-card">
-          <h3>${student}</h3>
-          <p><strong>${studentRows.length}</strong> diagnosed mistake(s)</p>
-          <p><strong>Average suspicion score:</strong> ${avgScore.toFixed(2)}</p>
-          <p class="small"><strong>Visible concepts:</strong></p>
-          ${concepts.map(c => `<span class="tag">${c}</span>`).join("")}
-          <p class="small"><strong>Possible root causes:</strong></p>
-          ${roots.map(r => `<span class="tag orange">${r}</span>`).join("")}
-          <p>
-            <a href="../outputs/reports/student_${student}.md" target="_blank">Open student report</a>
+        container.innerHTML += `
+          <div class="bar-line">
+            <div class="bar-label">
+              <span>${label}</span>
+              <strong>${displayValue}</strong>
+            </div>
+            <div class="bar-bg">
+              <div class="bar" style="width:${percent}%"></div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function renderCharts() {
+      renderBarChart("visibleChart", countBy(data.diagnosis, "visible_concept"));
+      renderBarChart("rootChart", countBy(data.diagnosis, "possible_root_cause"));
+      renderBarChart("causeChart", countBy(data.diagnosis, "cause_type"));
+      renderBarChart("studentScoreChart", averageBy(data.diagnosis, "student_id", "suspicion_score"), true);
+    }
+
+    function getConceptColor(concept) {
+      const chapter = (concept.chapter || "").toLowerCase();
+
+      if (chapter.includes("math")) return "#10b981";
+      if (chapter.includes("neural")) return "#f59e0b";
+      if (chapter.includes("llm")) return "#7c3aed";
+      if (chapter.includes("learning")) return "#2563eb";
+      if (chapter.includes("foundation")) return "#64748b";
+
+      return "#0ea5e9";
+    }
+
+    function getGraphPositions() {
+      const width = 900;
+      const height = 570;
+      const chapters = [...new Set(data.concepts.map(c => c.chapter || "Other"))];
+
+      const grouped = {};
+      chapters.forEach(chapter => grouped[chapter] = []);
+
+      data.concepts.forEach(concept => {
+        grouped[concept.chapter || "Other"].push(concept);
+      });
+
+      const positions = {};
+      const xStep = width / (chapters.length + 1);
+
+      chapters.forEach((chapter, index) => {
+        const concepts = grouped[chapter];
+        const yStep = height / (concepts.length + 1);
+
+        concepts.forEach((concept, j) => {
+          positions[concept.id] = {
+            x: Math.round((index + 1) * xStep),
+            y: Math.round((j + 1) * yStep)
+          };
+        });
+      });
+
+      return positions;
+    }
+
+    function getRelatedConceptIds() {
+      if (!selectedConceptId) return new Set();
+
+      const related = new Set([selectedConceptId]);
+
+      data.relations.forEach(relation => {
+        if (relation.source === selectedConceptId || relation.target === selectedConceptId) {
+          related.add(relation.source);
+          related.add(relation.target);
+        }
+      });
+
+      return related;
+    }
+
+    function renderGraph() {
+      const svg = byId("graphSvg");
+      const positions = getGraphPositions();
+      const related = getRelatedConceptIds();
+
+      svg.innerHTML = `
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5"
+            markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8"></path>
+          </marker>
+        </defs>
+      `;
+
+      data.relations.forEach(relation => {
+        const source = positions[relation.source];
+        const target = positions[relation.target];
+
+        if (!source || !target) return;
+
+        const isHighlighted =
+          selectedConceptId &&
+          (relation.source === selectedConceptId || relation.target === selectedConceptId);
+
+        const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+        line.setAttribute("x1", source.x);
+        line.setAttribute("y1", source.y);
+        line.setAttribute("x2", target.x);
+        line.setAttribute("y2", target.y);
+        line.setAttribute("class", isHighlighted ? "edge highlight" : "edge");
+        svg.appendChild(line);
+      });
+
+      data.concepts.forEach(concept => {
+        const position = positions[concept.id];
+        if (!position) return;
+
+        const hiddenByChapter = activeChapter && concept.chapter !== activeChapter;
+        const dimBySelection = selectedConceptId && !related.has(concept.id);
+
+        const group = document.createElementNS("http://www.w3.org/2000/svg", "g");
+        let className = "node";
+
+        if (hiddenByChapter || dimBySelection) className += " dim";
+        if (selectedConceptId === concept.id) className += " selected";
+
+        group.setAttribute("class", className);
+        group.setAttribute("transform", `translate(${position.x}, ${position.y})`);
+        group.addEventListener("click", () => selectConcept(concept.id));
+
+        const circle = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+        circle.setAttribute("r", selectedConceptId === concept.id ? "29" : "24");
+        circle.setAttribute("fill", getConceptColor(concept));
+        group.appendChild(circle);
+
+        const label = document.createElementNS("http://www.w3.org/2000/svg", "text");
+        label.setAttribute("y", "44");
+        label.textContent = concept.label.length > 18
+          ? concept.label.slice(0, 17) + "…"
+          : concept.label;
+        group.appendChild(label);
+
+        const title = document.createElementNS("http://www.w3.org/2000/svg", "title");
+        title.textContent = `${concept.label}\n${concept.description || ""}`;
+        group.appendChild(title);
+
+        svg.appendChild(group);
+      });
+    }
+
+    function selectConcept(id) {
+      selectedConceptId = id;
+      const concept = conceptById(id);
+      selectedConceptLabel = concept ? concept.label : "";
+      renderGraph();
+      renderConceptPanel();
+      renderDynamicViews();
+    }
+
+    function selectConceptByLabel(label) {
+      const concept = conceptByLabel(label);
+      if (concept) selectConcept(concept.id);
+    }
+
+    function clearSelection() {
+      selectedConceptId = null;
+      selectedConceptLabel = "";
+      renderGraph();
+      renderConceptPanel();
+      renderDynamicViews();
+    }
+
+    function renderConceptPanel() {
+      const panel = byId("conceptPanel");
+
+      if (!selectedConceptId) {
+        panel.innerHTML = `
+          <h3>Select a concept</h3>
+          <p class="small">
+            Click a node in the graph to inspect prerequisites, dependent concepts,
+            related questions and diagnosis cases.
           </p>
+          <div class="insight">
+            Suggested demo: click <strong>Neural Network</strong> to see how a visible error
+            can be linked to prerequisites such as Dot Product, Matrix and Vector.
+          </div>
+        `;
+        return;
+      }
+
+      const concept = conceptById(selectedConceptId);
+      const prerequisites = getPrerequisites(selectedConceptId);
+      const dependentConcepts = getDependentConcepts(selectedConceptId);
+      const questions = getQuestionsForConcept(selectedConceptId);
+      const relatedDiagnosis = diagnosisRelatedTo(concept.label);
+
+      panel.innerHTML = `
+        <div class="concept-title">
+          <div class="concept-icon">
+            ${concept.label.split(" ").map(word => word[0]).join("").slice(0, 2)}
+          </div>
+          <div>
+            <h3>${concept.label}</h3>
+            <span class="pill gray">${concept.chapter || "No chapter"}</span>
+          </div>
         </div>
+
+        <p class="small">${concept.description || ""}</p>
+
+        <h3>Prerequisites</h3>
+        ${
+          prerequisites.length
+            ? prerequisites.map(p => `<span class="pill orange">${p.label}</span>`).join("")
+            : `<p class="small">No prerequisite listed.</p>`
+        }
+
+        <h3 style="margin-top:18px;">Used by</h3>
+        ${
+          dependentConcepts.length
+            ? dependentConcepts.map(p => `<span class="pill green">${p.label}</span>`).join("")
+            : `<p class="small">No dependent concept listed.</p>`
+        }
+
+        <h3 style="margin-top:18px;">Related questions</h3>
+        <ul class="mini-list">
+          ${
+            questions.length
+              ? questions.map(q => `
+                <li>
+                  <strong>${q.question_id}</strong><br>
+                  ${q.question_text}<br>
+                  <span class="small">${q.difficulty}</span>
+                </li>
+              `).join("")
+              : `<li>No question evaluates this concept directly.</li>`
+          }
+        </ul>
+
+        <h3 style="margin-top:18px;">Diagnosis cases</h3>
+        <p class="small">
+          ${relatedDiagnosis.length} diagnosis row(s) involve this concept as visible concept or possible root cause.
+        </p>
       `;
-    });
-  }
+    }
 
-  function renderTable() {
-    const tbody = document.getElementById("detailsTable");
-    const data = getFilteredRows();
+    function renderStudentCards() {
+      const container = byId("studentCards");
+      const rows = getFilteredDiagnosis();
+      const byStudent = {};
 
-    tbody.innerHTML = "";
+      rows.forEach(row => {
+        if (!byStudent[row.student_id]) byStudent[row.student_id] = [];
+        byStudent[row.student_id].push(row);
+      });
 
-    data.forEach(row => {
-      tbody.innerHTML += `
-        <tr>
-          <td><strong>${row.student_id}</strong></td>
-          <td>
-            <strong>${row.question_id}</strong><br>
-            <span class="small">${row.question_text}</span>
-          </td>
-          <td><span class="tag">${row.visible_concept}</span></td>
-          <td><span class="tag orange">${row.possible_root_cause}</span></td>
-          <td>${row.suspicion_score}</td>
-          <td class="small">${row.teacher_explanation}</td>
-          <td class="small">${row.recommendation}</td>
-        </tr>
-      `;
-    });
-  }
+      container.innerHTML = "";
 
-  function renderDynamicViews() {
-    renderStudentCards();
-    renderTable();
-  }
+      Object.keys(byStudent).sort().forEach(student => {
+        const studentRows = byStudent[student];
 
-  function resetFilters() {
-    document.getElementById("studentFilter").value = "";
-    document.getElementById("conceptFilter").value = "";
-    document.getElementById("searchInput").value = "";
-    renderDynamicViews();
-  }
+        const averageScore =
+          studentRows.reduce((sum, row) => sum + parseFloat(row.suspicion_score || "0"), 0) /
+          studentRows.length;
 
-  function initializeDashboard() {
-    renderKpis();
-    renderCharts();
-    populateFilters();
-    renderDynamicViews();
-  }
+        const riskClass = averageScore >= 0.80 ? "high" : averageScore >= 0.65 ? "medium" : "";
+        const riskLabel = averageScore >= 0.80 ? "High attention" : averageScore >= 0.65 ? "Medium attention" : "Follow-up";
 
-  loadCsv();
-</script>
+        const visibleConcepts = Object.keys(countBy(studentRows, "visible_concept"));
+        const rootCauses = Object.keys(countBy(studentRows, "possible_root_cause"));
+
+        container.innerHTML += `
+          <div class="student-card">
+            <h3>${student} <span class="risk ${riskClass}">${riskLabel}</span></h3>
+            <p><strong>${studentRows.length}</strong> diagnosed mistake(s)</p>
+            <p><strong>Average suspicion score:</strong> ${averageScore.toFixed(2)}</p>
+
+            <p class="small"><strong>Visible concepts</strong></p>
+            ${visibleConcepts.map(v => `<span class="pill">${v}</span>`).join("")}
+
+            <p class="small" style="margin-top:10px;"><strong>Possible root causes</strong></p>
+            ${rootCauses.map(v => `<span class="pill orange">${v}</span>`).join("")}
+
+            <p style="margin-top:14px;">
+              <a href="../outputs/reports/student_${student}.md" target="_blank">Open student report</a>
+            </p>
+          </div>
+        `;
+      });
+
+      if (!container.innerHTML) {
+        container.innerHTML = `<p class="small">No student matches the current filters.</p>`;
+      }
+    }
+
+    function renderDetailsTable() {
+      const table = byId("detailsTable");
+      const rows = getFilteredDiagnosis();
+
+      table.innerHTML = "";
+
+      rows.forEach(row => {
+        table.innerHTML += `
+          <tr>
+            <td><strong>${row.student_id}</strong></td>
+            <td>
+              <strong>${row.question_id}</strong><br>
+              <span class="small">${row.question_text}</span>
+            </td>
+            <td><span class="pill">${row.visible_concept}</span></td>
+            <td><span class="pill orange">${row.possible_root_cause}</span></td>
+            <td><strong>${row.suspicion_score}</strong></td>
+            <td class="small">${row.teacher_explanation}</td>
+            <td class="small">${row.recommendation}</td>
+          </tr>
+        `;
+      });
+
+      if (!table.innerHTML) {
+        table.innerHTML = `<tr><td colspan="7">No diagnosis row matches the current filters.</td></tr>`;
+      }
+    }
+
+    function renderDynamicViews() {
+      renderStudentCards();
+      renderDetailsTable();
+    }
+
+    function resetFilters() {
+      byId("studentFilter").value = "";
+      byId("conceptFilter").value = "";
+      byId("rootFilter").value = "";
+      byId("searchInput").value = "";
+      clearSelection();
+    }
+
+    function initialize() {
+      renderKpis();
+      setupFilters();
+      renderCharts();
+      renderGraph();
+      renderConceptPanel();
+      renderDynamicViews();
+    }
+
+    loadData();
+  </script>
 </body>
 </html>
