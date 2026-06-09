@@ -104,3 +104,17 @@ neo4j_logs/
 *.safetensors
 models/*
 !models/.gitkeep
+# Real course data - never commit
+data/raw/
+data/processed/real_courses/anonymized/
+outputs/
+web/data/
+
+# Sensitive or large files
+*.xlsx
+*.xls
+*.zip
+*.csv.tmp
+.env
+.venv/
+__pycache__/
