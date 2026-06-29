@@ -1,0 +1,62 @@
+# AI 精准教学系统 · 本地双库 (PostgreSQL + Neo4j)
+# 一键启动：docker compose up -d
+# - Postgres 首次启动自动执行 backend/db/schema.sql 建表
+# - neo4j-init 在 Neo4j 健康后自动加载约束，然后退出
+# 默认账号密码与 backend/app/core/config.py 的默认值一致。
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: apt_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: ai_precision_teaching
+    ports:
+      - "5432:5432"
+      # 额外暴露 5433 给 Windows 上的 GUI（pgAdmin/DBeaver）用，
+      # 避免与 Windows 自带 PostgreSQL 占用的 5432 冲突。容器内仍是 5432。
+      - "5433:5432"
+    volumes:
+      - apt_pg_data:/var/lib/postgresql/data
+      # 仅在数据卷为空（首次初始化）时执行：
+      - ./backend/db/schema.sql:/docker-entrypoint-initdb.d/01_schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d ai_precision_teaching"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  neo4j:
+    image: neo4j:5
+    container_name: apt_neo4j
+    environment:
+      NEO4J_AUTH: neo4j/password
+    ports:
+      - "7474:7474"   # Browser UI
+      - "7687:7687"   # Bolt
+    volumes:
+      - apt_neo4j_data:/data
+    healthcheck:
+      test: ["CMD-SHELL", "cypher-shell -u neo4j -p password 'RETURN 1' || exit 1"]
+      interval: 10s
+      timeout: 10s
+      retries: 15
+
+  neo4j-init:
+    image: neo4j:5
+    container_name: apt_neo4j_init
+    depends_on:
+      neo4j:
+        condition: service_healthy
+    entrypoint:
+      - bash
+      - -c
+      - "cypher-shell -a bolt://neo4j:7687 -u neo4j -p password -f /init/neo4j_constraints.cypher && echo 'neo4j constraints applied'"
+    volumes:
+      - ./backend/db/neo4j_constraints.cypher:/init/neo4j_constraints.cypher:ro
+    restart: "no"
+
+volumes:
+  apt_pg_data:
+  apt_neo4j_data:

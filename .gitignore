@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# Data（含真实学生姓名/学号，禁止入库）
+data/raw/*
+!data/raw/.gitkeep
+*.xlsx
+*.xls
+*.doc
+*.docx
+*.zip
+# 常见的原始数据目录名
+ai data/
+*/原始数据/
+
+# Secrets
+*.key
+project_salt.txt
+
+# OS / IDE
+.DS_Store
+.vscode/
+.idea/
+
+# Node (if upgraded)
+node_modules/
+dist/
