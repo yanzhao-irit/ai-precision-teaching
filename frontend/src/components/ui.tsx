@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react'
+import { useLang } from '../i18n'
 
 export function Card({ title, children, className = '' }: { title?: ReactNode; children: ReactNode; className?: string }) {
   return (
@@ -49,8 +50,9 @@ export function Bar({ value, color = 'bg-blue-500' }: { value: number; color?: s
   )
 }
 
-export function Loading({ text = '加载中…' }: { text?: string }) {
-  return <div className="text-sm text-gray-400 py-8 text-center">{text}</div>
+export function Loading({ text }: { text?: string }) {
+  const { t } = useLang()
+  return <div className="text-sm text-gray-400 py-8 text-center">{text ?? t.loading}</div>
 }
 
 export function ErrorBox({ message }: { message: string }) {
@@ -65,7 +67,7 @@ export function Empty({ text }: { text: string }) {
   return <div className="text-sm text-gray-400 py-8 text-center">{text}</div>
 }
 
-// ===== 看板用：图表与配色 · charts & color helpers =====
+// ===== charts & color helpers =====
 
 export const COLORS = {
   mastered: '#22c55e',
@@ -75,6 +77,19 @@ export const COLORS = {
   blue: '#3b82f6',
 }
 
+export function useTierLabels(): Record<string, string> {
+  const { t } = useLang()
+  return {
+    mastered: t.mastered,
+    partial: t.partial,
+    unlearned: t.unlearned,
+    learning: t.partial,
+    not_learned: t.unlearned,
+    no_data: t.noDataTier,
+  }
+}
+
+/** Kept for compatibility — prefer useTierLabels() in components */
 export const TIER_CN: Record<string, string> = {
   mastered: '已掌握',
   partial: '部分掌握',
@@ -84,11 +99,9 @@ export const TIER_CN: Record<string, string> = {
   no_data: '无数据',
 }
 
-/** 百分比格式化；null → 占位符 */
 export const pct = (x: number | null | undefined, d = 0): string =>
   x == null ? '—' : `${(x * 100).toFixed(d)}%`
 
-/** 掌握度/正确率 → 颜色（三档）*/
 export function masteryColor(v: number | null | undefined): string {
   if (v == null) return COLORS.neutral
   if (v >= 0.7) return COLORS.mastered
@@ -96,14 +109,12 @@ export function masteryColor(v: number | null | undefined): string {
   return COLORS.unlearned
 }
 
-/** 三档 -> badge kind（复用 Badge 配色）*/
 export function tierKind(tier: string | null | undefined): string {
   if (tier === 'mastered') return 'mastered'
   if (tier === 'partial' || tier === 'learning') return 'partial'
   return 'unlearned'
 }
 
-/** 环形图：分段 + 居中文字 */
 export function Donut({
   segments,
   size = 132,
@@ -154,7 +165,6 @@ export function Donut({
   )
 }
 
-/** 排行条目：标签 + 数值条（颜色随数值）+ 右侧数值 */
 export function RankRow({
   label,
   sub,
@@ -188,7 +198,6 @@ export function RankRow({
   )
 }
 
-/** 区块标题 + 可选副标题/右侧 */
 export function SectionTitle({ children, right }: { children: ReactNode; right?: ReactNode }) {
   return (
     <div className="flex items-center justify-between mb-3">

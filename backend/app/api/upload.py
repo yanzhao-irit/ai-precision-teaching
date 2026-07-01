@@ -15,7 +15,11 @@ import tempfile
 import zipfile
 from pathlib import Path
 
-from fastapi import APIRouter, File, Form, HTTPException, UploadFile
+from fastapi import APIRouter, Depends, File, Form, HTTPException, UploadFile
+from sqlalchemy import text
+from sqlalchemy.ext.asyncio import AsyncSession
+
+from app.core.postgres_client import get_pg_session
 
 router = APIRouter(prefix="/api/upload", tags=["Upload"])
 
@@ -63,18 +67,58 @@ async def upload_question_bank(
     return {"message": await _run_etl(args)}
 
 
+async def _auto_create_student_accounts(session: AsyncSession, course_code: str) -> int:
+    """Create app_user accounts for students who don't have one yet."""
+    from app.core.auth import hash_password
+
+    res = await session.execute(
+        text("""
+            SELECT s.student_id, s.student_no
+            FROM student s
+            JOIN enrollment e ON e.student_id = s.student_id
+            JOIN course c ON c.course_id = e.course_id AND c.course_code = :cc
+            WHERE NOT EXISTS (
+                SELECT 1 FROM app_user u WHERE u.student_id = s.student_id
+            )
+        """),
+        {"cc": course_code},
+    )
+    rows = res.mappings().all()
+    created = 0
+    for row in rows:
+        student_no = str(row["student_no"])
+        await session.execute(
+            text("""
+                INSERT INTO app_user (login, password_hash, role, student_id, must_change_password)
+                VALUES (:login, :pw, 'student', :sid, true)
+                ON CONFLICT (login) DO NOTHING
+            """),
+            {
+                "login": student_no,
+                "pw": hash_password(student_no),
+                "sid": row["student_id"],
+            },
+        )
+        created += 1
+    await session.commit()
+    return created
+
+
 @router.post("/class-export")
 async def upload_class_export(
     course_code: str = Form(...),
     course_name: str | None = Form(None),
     file: UploadFile = File(...),
+    session: AsyncSession = Depends(get_pg_session),
 ):
-    """班级一键导出 .xlsx。"""
+    """班级一键导出 .xlsx。Auto-creates student accounts after ETL."""
     path = await _save_temp(file, "class_export.xlsx")
     args = ["class-export", str(path), "--course-code", course_code]
     if course_name:
         args += ["--course-name", course_name]
-    return {"message": await _run_etl(args)}
+    etl_msg = await _run_etl(args)
+    created = await _auto_create_student_accounts(session, course_code)
+    return {"message": etl_msg, "accounts_created": created}
 
 
 @router.post("/student-answers")

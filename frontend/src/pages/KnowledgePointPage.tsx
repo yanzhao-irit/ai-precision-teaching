@@ -3,8 +3,9 @@ import { api } from '../services/api'
 import { useAsync } from '../hooks/useAsync'
 import {
   Card, Stat, Loading, ErrorBox, Empty, Badge, SectionTitle,
-  TIER_CN, pct, masteryColor, tierKind,
+  pct, masteryColor, tierKind, useTierLabels,
 } from '../components/ui'
+import { useLang } from '../i18n'
 
 export default function KnowledgePointPage() {
   const { code = '', kpcode } = useParams()
@@ -12,6 +13,8 @@ export default function KnowledgePointPage() {
   const className = sp.get('class') || ''
   const q = className ? `?class=${encodeURIComponent(className)}` : ''
   const nav = useNavigate()
+  const { t } = useLang()
+  const tierLabels = useTierLabels()
   const { data, loading, error } = useAsync(
     () => api.kpDrill(code, kpcode!, className),
     [code, className, kpcode],
@@ -19,31 +22,31 @@ export default function KnowledgePointPage() {
 
   if (loading) return <Loading />
   if (error) return <ErrorBox message={error} />
-  if (!data) return <Empty text="知识点不存在。" />
+  if (!data) return <Empty text={t.kpNotFound} />
 
   const weak = data.students.filter((s) => (s.accuracy ?? 1) < 0.6)
 
   return (
     <div className="space-y-5">
-      <button onClick={() => nav(-1)} className="text-sm text-blue-600 hover:underline">← 返回</button>
+      <button onClick={() => nav(-1)} className="text-sm text-blue-600 hover:underline">{t.back}</button>
 
       <div className="flex items-center gap-2">
         <h2 className="text-lg font-semibold text-gray-800">{data.label}</h2>
-        {data.tier && <Badge kind={tierKind(data.tier)}>{TIER_CN[data.tier]}</Badge>}
+        {data.tier && <Badge kind={tierKind(data.tier)}>{tierLabels[data.tier]}</Badge>}
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4">
-        <Stat label="平均掌握度" value={pct(data.avg_mastery)} />
-        <Stat label="全班正确率" value={pct(data.accuracy)} />
-        <Stat label="作答学生" value={data.students.length} hint={`其中薄弱 ${weak.length} 人`} />
+        <Stat label={t.avgMasteryLabel} value={pct(data.avg_mastery)} />
+        <Stat label={t.classAccuracy} value={pct(data.accuracy)} />
+        <Stat label={t.respondedStudents} value={data.students.length} hint={t.weakStudents(weak.length)} />
       </div>
 
       <Card>
-        <SectionTitle right={<span className="text-xs text-gray-400">按正确率升序</span>}>
-          学生掌握情况
+        <SectionTitle right={<span className="text-xs text-gray-400">{t.sortByAccAsc}</span>}>
+          {t.studentMastery}
         </SectionTitle>
         {data.students.length === 0 ? (
-          <Empty text="该范围暂无作答数据。" />
+          <Empty text={t.noAnswerData} />
         ) : (
           <div className="divide-y divide-gray-50">
             {[...data.students]
@@ -71,7 +74,7 @@ export default function KnowledgePointPage() {
         )}
       </Card>
 
-      <p className="text-xs text-gray-400">前置知识链路（图谱）将在 v2 知识图谱前置边就绪后展示。</p>
+      <p className="text-xs text-gray-400">{t.kpNote}</p>
     </div>
   )
 }

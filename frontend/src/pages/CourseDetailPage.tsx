@@ -8,18 +8,14 @@ import UploadPanel from '../components/UploadPanel'
 import OverviewTab from './course/OverviewTab'
 import DiagnosisTab from './course/DiagnosisTab'
 import StudentsTab from './course/StudentsTab'
+import { useLang } from '../i18n'
 
 type Tab = 'overview' | 'diagnosis' | 'students'
-
-const TABS: { key: Tab; label: string }[] = [
-  { key: 'overview', label: '概览' },
-  { key: 'diagnosis', label: '学情' },
-  { key: 'students', label: '学生' },
-]
 
 export default function CourseDetailPage() {
   const { code = '' } = useParams()
   const { courseName } = useApp()
+  const { t } = useLang()
   const [sp, setSp] = useSearchParams()
   const className = sp.get('class') || ''
   const [tab, setTab] = useState<Tab>('overview')
@@ -27,6 +23,12 @@ export default function CourseDetailPage() {
   const [reloadKey, setReloadKey] = useState(0)
 
   const classes = useAsync(() => api.classes(code), [code, reloadKey])
+
+  const TABS: { key: Tab; label: string }[] = [
+    { key: 'overview', label: t.tabOverview },
+    { key: 'diagnosis', label: t.tabDiagnosis },
+    { key: 'students', label: t.tabStudents },
+  ]
 
   const setClassName = (c: string) => {
     const n = new URLSearchParams(sp)
@@ -37,9 +39,8 @@ export default function CourseDetailPage() {
 
   return (
     <div className="space-y-5">
-      {/* 面包屑 + 标题 + 班级筛选 + 导入 */}
       <div className="flex flex-wrap items-center gap-3">
-        <Link to="/" className="text-sm text-blue-600 hover:underline">课程列表</Link>
+        <Link to="/" className="text-sm text-blue-600 hover:underline">{t.courseList}</Link>
         <span className="text-gray-300">/</span>
         <h2 className="text-lg font-semibold text-gray-800">{courseName(code)}</h2>
         <div className="ml-auto flex items-center gap-2">
@@ -48,7 +49,7 @@ export default function CourseDetailPage() {
             onChange={(e) => setClassName(e.target.value)}
             className="border border-gray-300 rounded-lg px-2 py-1.5 text-sm min-w-[140px]"
           >
-            <option value="">全部班级</option>
+            <option value="">{t.allClasses}</option>
             {(classes.data || []).map((c) => (
               <option key={c} value={c}>{c}</option>
             ))}
@@ -57,7 +58,7 @@ export default function CourseDetailPage() {
             onClick={() => setShowUpload((v) => !v)}
             className="px-3 py-1.5 rounded-lg border border-gray-300 text-sm font-medium text-gray-700 hover:bg-gray-50"
           >
-            导入数据
+            {t.importData}
           </button>
         </div>
       </div>
@@ -65,23 +66,22 @@ export default function CourseDetailPage() {
       {showUpload && (
         <Card>
           <UploadPanel courseCode={code} onDone={() => setReloadKey((x) => x + 1)} />
-          <p className="text-xs text-gray-400 mt-3">文件将归入当前课程「{courseName(code)}」，无需填写课程代码。导入后页面数据自动刷新。</p>
+          <p className="text-xs text-gray-400 mt-3">{t.importHint(courseName(code))}</p>
         </Card>
       )}
 
-      {/* Tab 切换 */}
       <div className="flex gap-1 border-b border-gray-200">
-        {TABS.map((t) => (
+        {TABS.map((tab_) => (
           <button
-            key={t.key}
-            onClick={() => setTab(t.key)}
+            key={tab_.key}
+            onClick={() => setTab(tab_.key)}
             className={`px-4 py-2 text-sm font-medium -mb-px border-b-2 transition ${
-              tab === t.key
+              tab === tab_.key
                 ? 'border-blue-600 text-blue-600'
                 : 'border-transparent text-gray-500 hover:text-gray-700'
             }`}
           >
-            {t.label}
+            {tab_.label}
           </button>
         ))}
       </div>

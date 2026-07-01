@@ -17,6 +17,7 @@ services:
       # 额外暴露 5433 给 Windows 上的 GUI（pgAdmin/DBeaver）用，
       # 避免与 Windows 自带 PostgreSQL 占用的 5432 冲突。容器内仍是 5432。
       - "5433:5432"
+      - "5434:5432"
     volumes:
       - apt_pg_data:/var/lib/postgresql/data
       # 仅在数据卷为空（首次初始化）时执行：

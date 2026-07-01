@@ -2,10 +2,13 @@ import type { ReactNode } from 'react'
 import { api } from '../../services/api'
 import { useAsync } from '../../hooks/useAsync'
 import {
-  Card, Stat, Loading, ErrorBox, Empty, Donut, SectionTitle, COLORS, TIER_CN, pct,
+  Card, Stat, Loading, ErrorBox, Empty, Donut, SectionTitle, COLORS, pct, useTierLabels,
 } from '../../components/ui'
+import { useLang } from '../../i18n'
 
 export default function OverviewTab({ courseCode, className, reloadKey }: { courseCode: string; className: string; reloadKey: number }) {
+  const { t } = useLang()
+  const tierLabels = useTierLabels()
   const { data, loading, error } = useAsync(
     () => api.dashboard(courseCode, className),
     [courseCode, className, reloadKey],
@@ -13,7 +16,7 @@ export default function OverviewTab({ courseCode, className, reloadKey }: { cour
 
   if (loading) return <Loading />
   if (error) return <ErrorBox message={error} />
-  if (!data) return <Empty text="暂无数据。" />
+  if (!data) return <Empty text={t.noData} />
 
   const { stats, mastery } = data
   const dist = mastery.distribution
@@ -22,15 +25,15 @@ export default function OverviewTab({ courseCode, className, reloadKey }: { cour
   return (
     <div className="space-y-5">
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <Stat label="学生人数" value={stats.student_count} hint={`已测 ${stats.tested_students} 人`} />
-        <Stat label="整体正确率" value={pct(stats.accuracy)} hint={`${stats.response_count} 次作答`} />
-        <Stat label="平均掌握度" value={pct(mastery.avg_mastery)} hint="BKT · 三档 0.7 / 0.4" />
-        <Stat label="已测章节 / 班级" value={`${stats.chapter_count} / ${stats.class_count}`} />
+        <Stat label={t.studentCount} value={stats.student_count} hint={t.tested(stats.tested_students)} />
+        <Stat label={t.globalAccuracy} value={pct(stats.accuracy)} hint={t.responses(stats.response_count)} />
+        <Stat label={t.avgMastery} value={pct(mastery.avg_mastery)} hint={t.bktHint} />
+        <Stat label={t.chaptersClasses} value={`${stats.chapter_count} / ${stats.class_count}`} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <Card>
-          <SectionTitle>学生掌握分层</SectionTitle>
+          <SectionTitle>{t.masteryDistribution}</SectionTitle>
           {hasMastery ? (
             <div className="flex items-center gap-6">
               <Donut
@@ -40,42 +43,40 @@ export default function OverviewTab({ courseCode, className, reloadKey }: { cour
                   { value: dist.unlearned, color: COLORS.unlearned },
                 ]}
                 centerTop={mastery.tested_students}
-                centerBottom="已测学生"
+                centerBottom={t.testedStudents}
               />
               <div className="space-y-2">
                 {([
-                  ['mastered', dist.mastered, COLORS.mastered, '优秀'],
-                  ['partial', dist.partial, COLORS.partial, '达标'],
-                  ['unlearned', dist.unlearned, COLORS.unlearned, '薄弱'],
-                ] as const).map(([k, v, color, cn]) => (
+                  ['mastered', dist.mastered, COLORS.mastered, t.excellent],
+                  ['partial', dist.partial, COLORS.partial, t.onTrack],
+                  ['unlearned', dist.unlearned, COLORS.unlearned, t.weak],
+                ] as const).map(([k, v, color, label]) => (
                   <div key={k} className="flex items-center gap-2 text-sm">
                     <span className="inline-block w-3 h-3 rounded-sm" style={{ background: color }} />
-                    <span className="text-gray-700 w-16">{cn}</span>
-                    <span className="font-semibold text-gray-900">{v} 人</span>
+                    <span className="text-gray-700 w-20">{label}</span>
+                    <span className="font-semibold text-gray-900">{v}{t.people && ` ${t.people}`}</span>
                   </div>
                 ))}
               </div>
             </div>
           ) : (
-            <Empty text="该范围暂无逐题作答数据（仅客观单元测试 .doc 含逐题对错）。" />
+            <Empty text={t.noMasteryData} />
           )}
         </Card>
 
         <Card>
-          <SectionTitle>学习参与 · 成绩</SectionTitle>
+          <SectionTitle>{t.engagementGrades}</SectionTitle>
           <div className="grid grid-cols-2 gap-x-6 gap-y-4 text-sm">
-            <Metric label="人均讨论数" value={stats.engagement.avg_discussion_count ?? '—'} />
-            <Metric label="人均章节访问" value={stats.engagement.avg_chapter_visits ?? '—'} />
-            <Metric label="平均作业分" value={stats.grade.avg_homework ?? '—'} />
-            <Metric label="平均综合分" value={stats.grade.avg_final ?? '—'} />
+            <Metric label={t.avgDiscussion} value={stats.engagement.avg_discussion_count ?? '—'} />
+            <Metric label={t.avgChapterVisits} value={stats.engagement.avg_chapter_visits ?? '—'} />
+            <Metric label={t.avgHomework} value={stats.grade.avg_homework ?? '—'} />
+            <Metric label={t.avgFinal} value={stats.grade.avg_final ?? '—'} />
           </div>
-          <p className="text-xs text-gray-400 mt-4">参与/成绩来自班级一键导出（聚合信号），覆盖全部学生。</p>
+          <p className="text-xs text-gray-400 mt-4">{t.engagementNote}</p>
         </Card>
       </div>
 
-      <p className="text-xs text-gray-400">
-        分层说明：优秀（掌握度 ≥70%）/ 达标（40–70%）/ 薄弱（&lt;40%）。{TIER_CN.mastered}口径与个体诊断一致。
-      </p>
+      <p className="text-xs text-gray-400">{t.tierNote}</p>
     </div>
   )
 }

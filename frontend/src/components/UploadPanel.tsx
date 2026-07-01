@@ -1,34 +1,35 @@
 import { useRef, useState } from 'react'
 import { api } from '../services/api'
+import { useLang } from '../i18n'
 
 type ZoneState = { state: 'idle' | 'busy' | 'ok' | 'err'; msg: string }
 const IDLE: ZoneState = { state: 'idle', msg: '' }
 
-/** 课程内导入：course 由所在页面（URL）决定，无需手填代码。 */
 export default function UploadPanel({ courseCode, onDone }: { courseCode: string; onDone: () => void }) {
+  const { t } = useLang()
   const [zones, setZones] = useState<Record<string, ZoneState>>({ qb: IDLE, ce: IDLE, sa: IDLE })
   const setZone = (k: string, z: ZoneState) => setZones((s) => ({ ...s, [k]: z }))
 
   async function upload(kind: 'qb' | 'ce' | 'sa', file: File) {
-    setZone(kind, { state: 'busy', msg: `上传中：${file.name}` })
+    setZone(kind, { state: 'busy', msg: t.uploading(file.name) })
     try {
       const r =
         kind === 'qb' ? await api.uploadQuestionBank(file, courseCode)
         : kind === 'ce' ? await api.uploadClassExport(file, courseCode)
         : await api.uploadStudentAnswers(file, courseCode)
-      setZone(kind, { state: 'ok', msg: r.message || '导入完成' })
+      setZone(kind, { state: 'ok', msg: r.message || t.importDone })
       onDone()
     } catch (e: unknown) {
       const err = e as { response?: { data?: { detail?: string } }; message?: string }
-      setZone(kind, { state: 'err', msg: err?.response?.data?.detail || err?.message || '导入失败' })
+      setZone(kind, { state: 'err', msg: err?.response?.data?.detail || err?.message || t.importFailed })
     }
   }
 
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <DropZone title="课程数据" hint="班级一键导出 .xlsx" accept=".xlsx" zone={zones.ce} onFile={(f) => upload('ce', f)} />
-      <DropZone title="作业题库" hint="题库 .xls / .xlsx" accept=".xls,.xlsx" zone={zones.qb} onFile={(f) => upload('qb', f)} />
-      <DropZone title="学生作业" hint="zip（内含 .doc）" accept=".zip" zone={zones.sa} onFile={(f) => upload('sa', f)} />
+      <DropZone title={t.zoneClassData} hint={t.zoneClassHint} accept=".xlsx" zone={zones.ce} onFile={(f) => upload('ce', f)} />
+      <DropZone title={t.zoneQBData} hint={t.zoneQBHint} accept=".xls,.xlsx" zone={zones.qb} onFile={(f) => upload('qb', f)} />
+      <DropZone title={t.zoneStudentData} hint={t.zoneStudentHint} accept=".zip" zone={zones.sa} onFile={(f) => upload('sa', f)} />
     </div>
   )
 }

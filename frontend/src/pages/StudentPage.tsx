@@ -3,12 +3,15 @@ import { api } from '../services/api'
 import { useAsync } from '../hooks/useAsync'
 import {
   Card, Stat, Loading, ErrorBox, Empty, Badge, Donut, SectionTitle,
-  COLORS, TIER_CN, pct, masteryColor, tierKind,
+  COLORS, pct, masteryColor, tierKind, useTierLabels,
 } from '../components/ui'
+import { useLang } from '../i18n'
 
 export default function StudentPage() {
   const { code = '', no } = useParams()
   const nav = useNavigate()
+  const { t } = useLang()
+  const tierLabels = useTierLabels()
 
   const diag = useAsync(() => api.diagnosis(code, no!), [code, no])
   const prof = useAsync(() => api.profile(code, no!), [code, no])
@@ -17,7 +20,7 @@ export default function StudentPage() {
 
   if (diag.loading) return <Loading />
   if (diag.error) return <ErrorBox message={diag.error} />
-  if (!diag.data) return <Empty text="无诊断数据。" />
+  if (!diag.data) return <Empty text={t.noDiagData} />
 
   const d = diag.data
   const by = d.mastery_summary.by_state
@@ -28,24 +31,23 @@ export default function StudentPage() {
 
   return (
     <div className="space-y-5">
-      <button onClick={() => nav(-1)} className="text-sm text-blue-600 hover:underline">← 返回</button>
+      <button onClick={() => nav(-1)} className="text-sm text-blue-600 hover:underline">{t.back}</button>
 
       <div className="flex items-center gap-2">
-        <h2 className="text-lg font-semibold text-gray-800">学生 {no}</h2>
+        <h2 className="text-lg font-semibold text-gray-800">{t.studentTitle(no!)}</h2>
         {prof.data && <Badge kind={prof.data.tier}>{prof.data.tier}</Badge>}
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <Stat label="平均掌握度" value={pct(d.mastery_summary.avg_mastery)} />
-        <Stat label="作答 / 错误" value={`${d.total_attempts} / ${d.total_errors}`} />
-        <Stat label="正确率" value={pct(prof.data?.behavior.accuracy)} />
-        <Stat label="掌握知识点" value={`${by.mastered} / ${by.mastered + by.learning + by.not_learned}`} />
+        <Stat label={t.avgMasteryStat} value={pct(d.mastery_summary.avg_mastery)} />
+        <Stat label={t.attemptsErrors} value={`${d.total_attempts} / ${d.total_errors}`} />
+        <Stat label={t.accuracyStat} value={pct(prof.data?.behavior.accuracy)} />
+        <Stat label={t.masteredKPs} value={`${by.mastered} / ${by.mastered + by.learning + by.not_learned}`} />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        {/* 掌握分层 */}
         <Card>
-          <SectionTitle>知识点掌握分层</SectionTitle>
+          <SectionTitle>{t.kpMasteryDistribution}</SectionTitle>
           <div className="flex items-center gap-6">
             <Donut
               segments={[
@@ -54,21 +56,20 @@ export default function StudentPage() {
                 { value: by.not_learned, color: COLORS.unlearned },
               ]}
               centerTop={by.mastered + by.learning + by.not_learned}
-              centerBottom="知识点"
+              centerBottom={t.knowledgePoints}
             />
             <div className="space-y-2 text-sm">
-              <Legend color={COLORS.mastered} label="已掌握" v={by.mastered} />
-              <Legend color={COLORS.partial} label="部分掌握" v={by.learning} />
-              <Legend color={COLORS.unlearned} label="未掌握" v={by.not_learned} />
+              <Legend color={COLORS.mastered} label={t.mastered} v={by.mastered} />
+              <Legend color={COLORS.partial} label={t.partial} v={by.learning} />
+              <Legend color={COLORS.unlearned} label={t.unlearned} v={by.not_learned} />
             </div>
           </div>
         </Card>
 
-        {/* 优先干预 */}
         <Card>
-          <SectionTitle>优先干预建议</SectionTitle>
+          <SectionTitle>{t.priorityInterventions}</SectionTitle>
           {d.priority_interventions.length === 0 ? (
-            <Empty text="暂无需重点干预的知识点。" />
+            <Empty text={t.noInterventions} />
           ) : (
             <div className="space-y-3">
               {d.priority_interventions.map((p, i) => (
@@ -85,11 +86,10 @@ export default function StudentPage() {
         </Card>
       </div>
 
-      {/* 逐知识点掌握度 */}
       <Card>
-        <SectionTitle>逐知识点掌握度</SectionTitle>
+        <SectionTitle>{t.kpMasteryDetail}</SectionTitle>
         {mast.loading ? <Loading /> : masteryRows.length === 0 ? (
-          <Empty text="暂无掌握度数据。" />
+          <Empty text={t.noMasteryDetail} />
         ) : (
           <div className="divide-y divide-gray-50">
             {masteryRows.map(([codeKey, m]) => (
@@ -104,7 +104,7 @@ export default function StudentPage() {
                 <span className="text-sm font-semibold w-12 text-right" style={{ color: masteryColor(m.probability) }}>
                   {pct(m.probability)}
                 </span>
-                <Badge kind={tierKind(m.state)}>{TIER_CN[m.state] || m.state}</Badge>
+                <Badge kind={tierKind(m.state)}>{tierLabels[m.state] || m.state}</Badge>
               </div>
             ))}
           </div>

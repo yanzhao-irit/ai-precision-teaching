@@ -251,6 +251,24 @@ CREATE TABLE composite_grade (
     UNIQUE (enrollment_id)
 );
 
+-- ---------- Authentification · App Users ----------
+CREATE TYPE user_role AS ENUM ('teacher', 'student');
+
+CREATE TABLE app_user (
+    user_id              BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    login                TEXT NOT NULL UNIQUE,
+    password_hash        TEXT NOT NULL,
+    role                 user_role NOT NULL DEFAULT 'student',
+    student_id           BIGINT REFERENCES student(student_id),
+    must_change_password BOOLEAN NOT NULL DEFAULT false,
+    is_active            BOOLEAN NOT NULL DEFAULT true,
+    created_at           TIMESTAMPTZ DEFAULT now(),
+    last_login_at        TIMESTAMPTZ
+);
+
+CREATE INDEX idx_app_user_login    ON app_user(login);
+CREATE INDEX idx_app_user_student  ON app_user(student_id);
+
 -- ---------- 索引 · Indexes ----------
 CREATE INDEX idx_qr_question       ON question_response(question_id);
 CREATE INDEX idx_qr_correct        ON question_response(is_correct);

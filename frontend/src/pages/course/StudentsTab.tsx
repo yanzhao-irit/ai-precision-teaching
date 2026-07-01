@@ -3,22 +3,28 @@ import { useNavigate } from 'react-router-dom'
 import { api } from '../../services/api'
 import { useAsync } from '../../hooks/useAsync'
 import { Card, Loading, ErrorBox, Empty, Badge, pct, masteryColor } from '../../components/ui'
+import { useLang } from '../../i18n'
 import type { RosterStudent } from '../../types'
 
 type Filter = 'all' | 'excellent' | 'on_track' | 'weak' | 'untested' | 'attitude'
 
-const TIER_CN: Record<RosterStudent['tier'], string> = {
-  excellent: '优秀', on_track: '达标', weak: '薄弱', untested: '未测',
-}
 const TIER_KIND: Record<RosterStudent['tier'], string> = {
   excellent: 'mastered', on_track: 'on_track', weak: 'unlearned', untested: 'low',
 }
 
 export default function StudentsTab({ courseCode, className, reloadKey }: { courseCode: string; className: string; reloadKey: number }) {
   const nav = useNavigate()
+  const { t } = useLang()
   const { data, loading, error } = useAsync(() => api.roster(courseCode, className), [courseCode, className, reloadKey])
   const [filter, setFilter] = useState<Filter>('all')
   const [q, setQ] = useState('')
+
+  const TIER_LABEL: Record<RosterStudent['tier'], string> = {
+    excellent: t.filterExcellent,
+    on_track: t.filterOnTrack,
+    weak: t.filterWeak,
+    untested: t.filterUntested,
+  }
 
   const rows = useMemo(() => {
     const list = data?.students || []
@@ -34,16 +40,16 @@ export default function StudentsTab({ courseCode, className, reloadKey }: { cour
 
   if (loading) return <Loading />
   if (error) return <ErrorBox message={error} />
-  if (!data) return <Empty text="暂无数据。" />
+  if (!data) return <Empty text={t.noData} />
 
   const c = data.counts
   const chips: { key: Filter; label: string; n: number }[] = [
-    { key: 'all', label: '全部', n: data.students.length },
-    { key: 'excellent', label: '优秀', n: c.excellent },
-    { key: 'on_track', label: '达标', n: c.on_track },
-    { key: 'weak', label: '薄弱', n: c.weak },
-    { key: 'untested', label: '未测', n: c.untested },
-    { key: 'attitude', label: '态度(作业差)', n: c.attitude },
+    { key: 'all', label: t.filterAll, n: data.students.length },
+    { key: 'excellent', label: t.filterExcellent, n: c.excellent },
+    { key: 'on_track', label: t.filterOnTrack, n: c.on_track },
+    { key: 'weak', label: t.filterWeak, n: c.weak },
+    { key: 'untested', label: t.filterUntested, n: c.untested },
+    { key: 'attitude', label: t.filterAttitude, n: c.attitude },
   ]
 
   const clsSuffix = className ? `?class=${encodeURIComponent(className)}` : ''
@@ -67,24 +73,24 @@ export default function StudentsTab({ courseCode, className, reloadKey }: { cour
         <input
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          placeholder="搜索姓名 / 学号"
+          placeholder={t.searchPlaceholder}
           className="ml-auto border border-gray-300 rounded-lg px-3 py-1.5 text-sm w-44"
         />
       </div>
 
       {rows.length === 0 ? (
-        <Empty text="无匹配学生。" />
+        <Empty text={t.noMatchStudents} />
       ) : (
         <div className="overflow-hidden">
           <table className="w-full text-sm">
             <thead>
               <tr className="text-left text-gray-400 border-b border-gray-100">
-                <th className="py-2 font-medium">学生</th>
-                <th className="py-2 font-medium">班级</th>
-                <th className="py-2 font-medium">分层</th>
-                <th className="py-2 font-medium text-right">掌握度</th>
-                <th className="py-2 font-medium text-right">正确率</th>
-                <th className="py-2 font-medium text-right">作业</th>
+                <th className="py-2 font-medium">{t.colStudent}</th>
+                <th className="py-2 font-medium">{t.colClass}</th>
+                <th className="py-2 font-medium">{t.colTier}</th>
+                <th className="py-2 font-medium text-right">{t.colMastery}</th>
+                <th className="py-2 font-medium text-right">{t.colAccuracy}</th>
+                <th className="py-2 font-medium text-right">{t.colHomework}</th>
               </tr>
             </thead>
             <tbody>
@@ -100,8 +106,8 @@ export default function StudentsTab({ courseCode, className, reloadKey }: { cour
                   </td>
                   <td className="py-2 text-gray-500 text-xs">{s.class_name || '—'}</td>
                   <td className="py-2">
-                    <Badge kind={TIER_KIND[s.tier]}>{TIER_CN[s.tier]}</Badge>
-                    {s.attitude && <span className="ml-1 text-xs text-amber-600">态度</span>}
+                    <Badge kind={TIER_KIND[s.tier]}>{TIER_LABEL[s.tier]}</Badge>
+                    {s.attitude && <span className="ml-1 text-xs text-amber-600">{t.attitude}</span>}
                   </td>
                   <td className="py-2 text-right font-semibold" style={{ color: masteryColor(s.avg_mastery) }}>
                     {pct(s.avg_mastery)}

@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from 'react'
 import { api } from '../services/api'
+import { useLang } from '../i18n'
 import type { Course } from '../types'
 
 interface AppCtxValue {
@@ -12,6 +13,7 @@ interface AppCtxValue {
 const AppCtx = createContext<AppCtxValue | null>(null)
 
 export function AppProvider({ children }: { children: ReactNode }) {
+  const { t } = useLang()
   const [courses, setCourses] = useState<Course[]>([])
   const [loadingMeta, setLoadingMeta] = useState(true)
   const [metaError, setMetaError] = useState<string | null>(null)
@@ -20,7 +22,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     api
       .courses()
       .then(setCourses)
-      .catch((e) => setMetaError(e?.message || '无法加载课程，后端是否已启动？'))
+      .catch((e) => setMetaError(e?.message || t.backendError))
       .finally(() => setLoadingMeta(false))
   }, [])
 

@@ -14,6 +14,8 @@ from app.api import (
     diagnosis, profiles, recommendations, warnings, evaluation, students,
     dashboard, upload,
 )
+from app.api import auth as auth_api
+from app.api import student_portal
 
 
 @asynccontextmanager
@@ -48,7 +50,8 @@ app = FastAPI(title=settings.APP_TITLE, version=settings.APP_VERSION, lifespan=l
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],      # 生产环境请收紧
+    allow_origins=["http://localhost:5173", "http://localhost:4173"],
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -61,6 +64,8 @@ app.include_router(evaluation.router)
 app.include_router(students.router)
 app.include_router(dashboard.router)
 app.include_router(upload.router)
+app.include_router(auth_api.router)
+app.include_router(student_portal.router)
 
 
 @app.get("/", tags=["Root"])
